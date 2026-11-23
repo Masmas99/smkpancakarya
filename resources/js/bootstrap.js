@@ -1,4 +1,2 @@
-import axios from 'axios';
-window.axios = axios;
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Axios tidak dipakai: Livewire menangani semua request AJAX.
+// File ini sengaja dibiarkan kosong agar bundle JS tetap kecil.
