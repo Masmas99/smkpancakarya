@@ -11,7 +11,7 @@ class LandingPageTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('SMK Pancakarya')
-            ->assertSee('images/logo-smk-pancakarya.png', false)
+            ->assertSee('images/logo-smk-pancakarya.webp', false)
             ->assertSee('alt="Logo SMK Pancakarya"', false);
     }
 

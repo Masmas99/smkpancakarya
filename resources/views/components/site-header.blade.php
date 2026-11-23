@@ -26,7 +26,7 @@
             class="flex shrink-0 items-center gap-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
         >
             <img
-                src="{{ asset('images/logo-smk-pancakarya.png') }}"
+                src="{{ asset('images/logo-smk-pancakarya.webp') }}"
                 alt="Logo SMK Pancakarya"
                 width="56"
                 height="56"
