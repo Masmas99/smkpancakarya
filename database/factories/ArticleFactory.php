@@ -26,6 +26,7 @@ class ArticleFactory extends Factory
             'user_id' => User::factory(),
             'title' => $title,
             'slug' => null,
+            'category' => Article::DEFAULT_CATEGORY,
             'excerpt' => fake()->sentence(12),
             'body' => fake()->paragraphs(3, true),
             'cover_image' => null,

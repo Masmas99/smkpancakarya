@@ -100,6 +100,7 @@ class ArticleTest extends TestCase
 
         $this->assertSame('Kegiatan Peringatan Hari Guru', $article->title);
         $this->assertSame('kegiatan-peringatan-hari-guru', $article->slug);
+        $this->assertSame(Article::DEFAULT_CATEGORY, $article->category);
         $this->assertSame(Article::STATUS_PUBLISHED, $article->status);
         $this->assertSame($staff->id, $article->user_id);
         $this->assertNotNull($article->published_at);
@@ -225,7 +226,7 @@ class ArticleTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('Artikel Terbaru')
+            ->assertSee('Artikel dan Berita Terbaru')
             ->assertSee('Lihat Semua Artikel')
             ->assertSee('Belum ada artikel yang dipublikasikan.');
     }
@@ -236,9 +237,58 @@ class ArticleTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Artikel Terbaru')
+            ->assertSee('Artikel dan Berita Terbaru')
             ->assertSee('Berita Terbaru di Beranda')
             ->assertSee('Lihat Semua Artikel');
+    }
+
+    public function test_public_article_index_shows_category_tabs(): void
+    {
+        $this->get('/artikel')
+            ->assertOk()
+            ->assertSee('Artikel dan Berita Terbaru')
+            ->assertSee('Berita')
+            ->assertSee('Prestasi')
+            ->assertSee('Press Release');
+    }
+
+    public function test_public_article_index_can_filter_by_category(): void
+    {
+        Article::factory()->published()->create(['title' => 'Berita Umum Sekolah', 'category' => 'berita']);
+        Article::factory()->published()->create(['title' => 'Juara Lomba Kompetensi', 'category' => 'prestasi']);
+        Article::factory()->published()->create(['title' => 'Rilis Pers Sekolah', 'category' => 'press-release']);
+
+        $this->get('/artikel?category=prestasi')
+            ->assertOk()
+            ->assertSee('Juara Lomba Kompetensi')
+            ->assertDontSee('Berita Umum Sekolah')
+            ->assertDontSee('Rilis Pers Sekolah');
+    }
+
+    public function test_public_article_index_ignores_unknown_category(): void
+    {
+        Article::factory()->published()->create(['title' => 'Artikel Tetap Tampil', 'category' => 'berita']);
+
+        $this->get('/artikel?category=tidak-ada')
+            ->assertOk()
+            ->assertSee('Artikel Tetap Tampil');
+    }
+
+    public function test_staff_can_choose_an_article_category(): void
+    {
+        $staff = User::factory()->create();
+
+        $this->actingAs($staff)->post('/staff/artikel', [
+            'title' => 'Prestasi Siswa Bulan Ini',
+            'body' => 'Isi artikel prestasi.',
+            'category' => 'prestasi',
+            'status' => Article::STATUS_PUBLISHED,
+        ])->assertRedirect(route('staff.artikel.index'));
+
+        $this->assertDatabaseHas('articles', [
+            'title' => 'Prestasi Siswa Bulan Ini',
+            'category' => 'prestasi',
+        ]);
     }
 
     public function test_admin_can_create_an_article_from_the_admin_area(): void

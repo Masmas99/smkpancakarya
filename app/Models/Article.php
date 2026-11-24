@@ -19,6 +19,17 @@ class Article extends Model
 
     public const STATUS_PUBLISHED = 'published';
 
+    public const DEFAULT_CATEGORY = 'berita';
+
+    /**
+     * @var array<string, string>
+     */
+    public const CATEGORIES = [
+        'berita' => 'Berita',
+        'prestasi' => 'Prestasi',
+        'press-release' => 'Press Release',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +39,7 @@ class Article extends Model
         'user_id',
         'title',
         'slug',
+        'category',
         'excerpt',
         'body',
         'cover_image',
@@ -84,6 +96,11 @@ class Article extends Model
     public function statusLabel(): string
     {
         return $this->status === self::STATUS_PUBLISHED ? 'Terbit' : 'Draf';
+    }
+
+    public function categoryLabel(): string
+    {
+        return self::CATEGORIES[$this->category] ?? self::CATEGORIES[self::DEFAULT_CATEGORY];
     }
 
     public function excerptText(int $limit = 160): string

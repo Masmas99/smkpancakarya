@@ -85,6 +85,24 @@
         <div class="space-y-6">
             <div class="space-y-5 bg-white p-6 shadow-sm sm:rounded-lg">
                 <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <select
+                        id="category"
+                        name="category"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    >
+                        @foreach (\App\Models\Article::CATEGORIES as $value => $label)
+                            <option value="{{ $value }}" @selected(old('category', $artikel->category ?? \App\Models\Article::DEFAULT_CATEGORY) === $value)>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('category')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <select
                         id="status"

@@ -11,6 +11,10 @@
 
         <article class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500">
+                <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                    {{ $article->categoryLabel() }}
+                </span>
+
                 <span>
                     {{ __('site.articles.by') }}
                     <span class="font-medium text-slate-700">{{ $article->author?->name ?? 'Admin' }}</span>

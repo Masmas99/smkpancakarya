@@ -65,6 +65,7 @@ abstract class ArticleManagementController extends Controller
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
         $data['slug'] = $request->filled('slug') ? (string) $request->input('slug') : null;
+        $data['category'] = $data['category'] ?? Article::DEFAULT_CATEGORY;
         $data['status'] = $data['status'] ?? Article::STATUS_DRAFT;
         $data['published_at'] = $data['status'] === Article::STATUS_PUBLISHED ? now() : null;
         $data['cover_image'] = $this->storeCover($request);
@@ -89,6 +90,7 @@ abstract class ArticleManagementController extends Controller
     {
         $data = $request->validated();
         $data['slug'] = $request->filled('slug') ? (string) $request->input('slug') : null;
+        $data['category'] = $data['category'] ?? Article::DEFAULT_CATEGORY;
 
         $data['published_at'] = $data['status'] === Article::STATUS_PUBLISHED
             ? ($artikel->published_at ?? now())

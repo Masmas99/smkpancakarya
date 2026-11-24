@@ -160,7 +160,7 @@
                             {{ __('site.nav.articles') }}
                         </p>
                         <h2 id="articles-title" class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                            {{ __('site.articles.latest') }}
+                            {{ __('site.articles.heading') }}
                         </h2>
                     </div>
 
