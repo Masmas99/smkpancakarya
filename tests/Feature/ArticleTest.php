@@ -288,8 +288,9 @@ class ArticleTest extends TestCase
             ->assertSee('Artikel dan Berita Terbaru')
             ->assertSee('Berita')
             ->assertSee('Prestasi')
-            ->assertSee('Press Release')
-            ->assertSee('Belum ada artikel yang dipublikasikan.');
+            ->assertSee('Artikel')
+            ->assertSee('Blog Guru')
+            ->assertSee('Belum ada artikel pada kategori ini.');
     }
 
     public function test_landing_page_shows_latest_published_articles(): void
@@ -309,7 +310,8 @@ class ArticleTest extends TestCase
             ->assertSee('Artikel dan Berita Terbaru')
             ->assertSee('Berita')
             ->assertSee('Prestasi')
-            ->assertSee('Press Release');
+            ->assertSee('Artikel')
+            ->assertSee('Blog Guru');
     }
 
     public function test_landing_page_article_section_can_filter_by_category(): void
@@ -334,7 +336,7 @@ class ArticleTest extends TestCase
             ->assertSee('Artikel Tetap Tampil');
     }
 
-    public function test_landing_page_article_section_can_load_more_articles(): void
+    public function test_landing_page_article_section_shows_three_articles_per_page(): void
     {
         foreach (range(1, 7) as $index) {
             Article::factory()->published()->create([
@@ -347,11 +349,59 @@ class ArticleTest extends TestCase
             ->assertOk()
             ->assertSee('Muat Lebih Banyak')
             ->assertSee('Artikel Beranda 1')
-            ->assertDontSee('Artikel Beranda 7');
+            ->assertSee('Artikel Beranda 2')
+            ->assertSee('Artikel Beranda 3')
+            ->assertDontSee('Artikel Beranda 4');
 
         $this->get('/?page=2')
             ->assertOk()
+            ->assertSee('Artikel Beranda 4')
+            ->assertDontSee('Artikel Beranda 7');
+
+        $this->get('/?page=3')
+            ->assertOk()
             ->assertSee('Artikel Beranda 7');
+    }
+
+    public function test_landing_page_defaults_to_berita_tab(): void
+    {
+        Article::factory()->published()->create(['title' => 'Kabar Berita Utama', 'category' => 'berita']);
+        Article::factory()->published()->create(['title' => 'Kabar Prestasi Utama', 'category' => 'prestasi']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Kabar Berita Utama')
+            ->assertDontSee('Kabar Prestasi Utama');
+    }
+
+    public function test_landing_page_artikel_tab_shows_all_articles(): void
+    {
+        Article::factory()->published()->create(['title' => 'Kabar Berita Utama', 'category' => 'berita', 'published_at' => now()->subMinutes(1)]);
+        Article::factory()->published()->create(['title' => 'Kabar Prestasi Utama', 'category' => 'prestasi', 'published_at' => now()->subMinutes(2)]);
+        Article::factory()->published()->create(['title' => 'Rilis Pers Utama', 'category' => 'press-release', 'published_at' => now()->subMinutes(3)]);
+        Article::factory()->published()->create(['title' => 'Tulisan Guru Utama', 'category' => 'blog-guru', 'published_at' => now()->subMinutes(4)]);
+
+        $this->get('/?category=artikel')
+            ->assertOk()
+            ->assertSee('Kabar Berita Utama')
+            ->assertSee('Kabar Prestasi Utama')
+            ->assertSee('Rilis Pers Utama')
+            ->assertDontSee('Tulisan Guru Utama');
+
+        $this->get('/?category=artikel&page=2')
+            ->assertOk()
+            ->assertSee('Tulisan Guru Utama');
+    }
+
+    public function test_landing_page_blog_guru_tab_only_shows_blog_guru_articles(): void
+    {
+        Article::factory()->published()->create(['title' => 'Kabar Berita Utama', 'category' => 'berita']);
+        Article::factory()->published()->create(['title' => 'Tulisan Guru Utama', 'category' => 'blog-guru']);
+
+        $this->get('/?category=blog-guru')
+            ->assertOk()
+            ->assertSee('Tulisan Guru Utama')
+            ->assertDontSee('Kabar Berita Utama');
     }
 
     public function test_staff_can_choose_an_article_category(): void

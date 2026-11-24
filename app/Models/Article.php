@@ -35,6 +35,18 @@ class Article extends Model
     ];
 
     /**
+     * Tab kategori pada beranda. Tab "Artikel" menampilkan seluruh artikel.
+     *
+     * @var array<string, string>
+     */
+    public const HOME_TABS = [
+        'berita' => 'Berita',
+        'prestasi' => 'Prestasi',
+        'artikel' => 'Artikel',
+        'blog-guru' => 'Blog Guru',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

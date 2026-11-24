@@ -159,13 +159,13 @@
                 </h2>
 
                 <nav
-                    class="mx-auto mt-8 grid max-w-5xl grid-cols-3 gap-1 rounded-full bg-blue-950 p-1.5"
+                    class="mx-auto mt-8 grid max-w-5xl grid-cols-2 gap-1 rounded-3xl bg-blue-950 p-1.5 sm:grid-cols-4 sm:rounded-full"
                     aria-label="{{ __('site.articles.filter_label') }}"
                 >
                     @foreach ($categories as $key => $label)
                         @php $isActive = $activeCategory === $key; @endphp
                         <a
-                            href="{{ $isActive ? route('home') : route('home', ['category' => $key]) }}#artikel"
+                            href="{{ route('home', $key === 'berita' ? [] : ['category' => $key]) }}#artikel"
                             @class([
                                 'rounded-full px-2 py-2.5 text-center text-sm font-bold transition sm:px-4 sm:text-base',
                                 'bg-amber-400 text-blue-950' => $isActive,
@@ -181,7 +181,7 @@
                 @if ($articles->isEmpty())
                     <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-14 text-center">
                         <p class="text-base font-semibold text-slate-700">
-                            {{ $activeCategory !== '' ? __('site.articles.empty_category') : __('site.articles.empty') }}
+                            {{ $activeCategory === 'artikel' ? __('site.articles.empty') : __('site.articles.empty_category') }}
                         </p>
                     </div>
                 @else

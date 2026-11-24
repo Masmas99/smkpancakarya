@@ -13,18 +13,17 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request): View
     {
-        $categories = Article::CATEGORIES;
-        $activeCategory = (string) $request->query('category', '');
+        $categories = Article::HOME_TABS;
+        $activeCategory = (string) $request->query('category', Article::DEFAULT_CATEGORY);
 
         if (! array_key_exists($activeCategory, $categories)) {
-            $activeCategory = '';
+            $activeCategory = Article::DEFAULT_CATEGORY;
         }
 
         $articles = Article::published()
-            ->whereIn('category', array_keys($categories))
-            ->when($activeCategory !== '', fn ($query) => $query->where('category', $activeCategory))
+            ->when($activeCategory !== 'artikel', fn ($query) => $query->where('category', $activeCategory))
             ->latest('published_at')
-            ->simplePaginate(6)
+            ->simplePaginate(3)
             ->withQueryString();
 
         return view('pages.landing.index', compact('articles', 'categories', 'activeCategory'));
