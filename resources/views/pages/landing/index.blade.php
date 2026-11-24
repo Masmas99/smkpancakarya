@@ -152,38 +152,47 @@
             </div>
         </section>
 
-        @if (($latestArticles ?? collect())->isNotEmpty())
-            <section class="border-t border-slate-200 bg-white py-14 sm:py-16" aria-labelledby="articles-title">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex flex-wrap items-end justify-between gap-4">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                                {{ __('site.nav.articles') }}
-                            </p>
-                            <h2 id="articles-title" class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                                {{ __('site.articles.latest') }}
-                            </h2>
-                        </div>
-
-                        <a
-                            href="{{ route('artikel.index') }}"
-                            class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
-                        >
-                            {{ __('site.articles.view_all') }}
-                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                            </svg>
-                        </a>
+        <section class="border-t border-slate-200 bg-white py-14 sm:py-16" aria-labelledby="articles-title">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                            {{ __('site.nav.articles') }}
+                        </p>
+                        <h2 id="articles-title" class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                            {{ __('site.articles.latest') }}
+                        </h2>
                     </div>
 
+                    <a
+                        href="{{ route('artikel.index') }}"
+                        class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
+                    >
+                        {{ __('site.articles.view_all') }}
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+
+                @if (($latestArticles ?? collect())->isEmpty())
+                    <div class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+                        <p class="text-base font-semibold text-slate-700">
+                            {{ __('site.articles.empty') }}
+                        </p>
+                        <p class="mt-1 text-sm text-slate-500">
+                            {{ __('site.articles.empty_hint') }}
+                        </p>
+                    </div>
+                @else
                     <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($latestArticles as $article)
                             @include('pages.landing.artikel._card', ['article' => $article])
                         @endforeach
                     </div>
-                </div>
-            </section>
-        @endif
+                @endif
+            </div>
+        </section>
     </main>
 
     <script>

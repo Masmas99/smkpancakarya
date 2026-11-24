@@ -87,6 +87,7 @@ return [
         'latest' => 'Artikel Terbaru',
         'view_all' => 'Lihat Semua Artikel',
         'empty' => 'Belum ada artikel yang dipublikasikan.',
+        'empty_hint' => 'Artikel yang diterbitkan melalui panel admin atau staff akan tampil di sini.',
         'read_more' => 'Baca selengkapnya',
         'back' => 'Kembali ke daftar artikel',
         'by' => 'Oleh',

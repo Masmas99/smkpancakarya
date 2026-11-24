@@ -221,6 +221,15 @@ class ArticleTest extends TestCase
         $this->assertSame('berita-sama-2', $second->slug);
     }
 
+    public function test_landing_page_shows_article_section_below_welcome(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Artikel Terbaru')
+            ->assertSee('Lihat Semua Artikel')
+            ->assertSee('Belum ada artikel yang dipublikasikan.');
+    }
+
     public function test_landing_page_shows_latest_published_articles(): void
     {
         Article::factory()->published()->create(['title' => 'Berita Terbaru di Beranda']);
