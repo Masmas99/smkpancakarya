@@ -34,6 +34,11 @@ abstract class Article extends Model
     public const BLOG_CATEGORY = 'blog-guru';
 
     /**
+     * Kategori yang aktif secara default pada tab beranda.
+     */
+    public const HOME_DEFAULT_CATEGORY = 'prestasi';
+
+    /**
      * Slug bagian publik sekaligus kategori konten.
      */
     public const SECTION = '';

@@ -170,8 +170,8 @@
                             data-category="{{ $key }}"
                             @class([
                                 'rounded-full px-2 py-2.5 text-center text-sm font-bold transition sm:px-4 sm:text-base',
-                                'bg-amber-400 text-blue-950' => $isActive,
-                                'text-amber-400 hover:text-amber-300' => ! $isActive,
+                                'bg-white text-blue-950 shadow-sm' => $isActive,
+                                'text-white hover:bg-blue-900 hover:text-white' => ! $isActive,
                             ])
                             @if ($isActive) aria-current="page" @endif
                         >

@@ -14,13 +14,13 @@ class HomeController extends Controller
     public function __invoke(Request $request): View
     {
         $categories = Article::HOME_TABS;
-        $activeCategory = (string) $request->query('category', Article::DEFAULT_CATEGORY);
+        $activeCategory = (string) $request->query('category', Article::HOME_DEFAULT_CATEGORY);
 
         if (! array_key_exists($activeCategory, $categories)) {
-            $activeCategory = Article::DEFAULT_CATEGORY;
+            $activeCategory = Article::HOME_DEFAULT_CATEGORY;
         }
 
-        $model = Article::models()[$activeCategory] ?? Article::modelForCategory(Article::DEFAULT_CATEGORY);
+        $model = Article::models()[$activeCategory] ?? Article::modelForCategory(Article::HOME_DEFAULT_CATEGORY);
 
         $articles = $model::published()
             ->latest('published_at')
