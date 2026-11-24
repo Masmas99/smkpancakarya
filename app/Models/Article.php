@@ -60,8 +60,8 @@ abstract class Article extends Model
      * @var array<string, string>
      */
     public const HOME_TABS = [
-        'berita' => 'Berita',
         'prestasi' => 'Prestasi',
+        'berita' => 'Berita',
         'artikel' => 'Artikel',
         'blog-guru' => 'Blog Guru',
     ];
