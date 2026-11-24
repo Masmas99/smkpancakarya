@@ -1,8 +1,8 @@
-<x-layouts.public title="Kesiswaan">
+<x-layouts.public :title="__('site.nav.student_affairs')">
     <main>
         <x-page-heading
-            title="Kesiswaan"
-            :parents="[['label' => 'Profil', 'url' => route('profil')]]"
+            :title="__('site.nav.student_affairs')"
+            :parents="[['label' => __('site.nav.profile'), 'url' => route('profil')]]"
         />
     </main>
 </x-layouts.public>

@@ -1,5 +1,5 @@
-<x-layouts.public title="Sarana">
+<x-layouts.public :title="__('site.nav.facilities')">
     <main>
-        <x-page-heading title="Sarana" />
+        <x-page-heading :title="__('site.nav.facilities')" />
     </main>
 </x-layouts.public>

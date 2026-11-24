@@ -3,14 +3,14 @@
 <div class="border-b border-slate-200 bg-white">
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         {{-- Breadcrumb --}}
-        <nav aria-label="Breadcrumb">
+        <nav aria-label="{{ __('site.breadcrumb.label') }}">
             <ol class="flex flex-wrap items-center gap-2 text-sm">
                 <li>
                     <a
                         href="{{ route('home') }}"
                         class="font-medium text-slate-500 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                     >
-                        Beranda
+                        {{ __('site.breadcrumb.home') }}
                     </a>
                 </li>
 

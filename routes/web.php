@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'pages.landing.index')->name('home');
+
+Route::get('language/{locale}', LocaleController::class)->name('language.switch');
 
 Route::view('kompetensi-keahlian', 'pages.landing.kompetensi-keahlian')->name('kompetensi-keahlian');
 Route::view('prestasi', 'pages.landing.prestasi')->name('prestasi');

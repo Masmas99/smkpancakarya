@@ -15,19 +15,27 @@ class LandingPageTest extends TestCase
             ->assertSee('alt="Logo SMK Pancakarya"', false);
     }
 
+    public function test_landing_page_defaults_to_english(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('<html lang="en"', false)
+            ->assertSee('Vocational High School');
+    }
+
     public function test_landing_page_shows_the_main_navigation(): void
     {
         $response = $this->get('/');
 
         foreach ([
-            'Beranda',
-            'Kompetensi Keahlian',
-            'Prestasi',
-            'Profil',
-            'Visi dan Misi',
-            'Kontak',
-            'Sarana',
-            'Info PPDB',
+            'Home',
+            'Study Programs',
+            'Achievements',
+            'Profile',
+            'Vision and Mission',
+            'Contact',
+            'Facilities',
+            'Admission Info',
         ] as $menu) {
             $response->assertSee($menu);
         }
@@ -37,8 +45,10 @@ class LandingPageTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('aria-label="Cari"', false)
-            ->assertSee('aria-label="Bahasa Indonesia"', false)
+            ->assertSee('aria-label="Search"', false)
+            ->assertSee('href="'.route('language.switch', 'en').'"', false)
+            ->assertSee('href="'.route('language.switch', 'id').'"', false)
+            ->assertSee('data-search-item', false)
             ->assertSee('bg-blue-700', false);
     }
 

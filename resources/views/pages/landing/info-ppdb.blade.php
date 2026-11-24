@@ -1,5 +1,5 @@
-<x-layouts.public title="Info PPDB">
+<x-layouts.public :title="__('site.nav.admission')">
     <main>
-        <x-page-heading title="Info PPDB" />
+        <x-page-heading :title="__('site.nav.admission')" />
     </main>
 </x-layouts.public>

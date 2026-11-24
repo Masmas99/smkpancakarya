@@ -9,16 +9,16 @@ class MenuPageTest extends TestCase
     public function test_menu_pages_are_accessible_and_show_their_title(): void
     {
         $pages = [
-            '/kompetensi-keahlian' => 'Kompetensi Keahlian',
-            '/prestasi' => 'Prestasi',
-            '/profil' => 'Profil',
+            '/kompetensi-keahlian' => 'Study Programs',
+            '/prestasi' => 'Achievements',
+            '/profil' => 'Profile',
             '/profil/about' => 'About',
-            '/profil/kesiswaan' => 'Kesiswaan',
-            '/profil/akademik' => 'Akademik',
-            '/visi-dan-misi' => 'Visi dan Misi',
-            '/kontak' => 'Kontak',
-            '/sarana' => 'Sarana',
-            '/info-ppdb' => 'Info PPDB',
+            '/profil/kesiswaan' => 'Student Affairs',
+            '/profil/akademik' => 'Academics',
+            '/visi-dan-misi' => 'Vision and Mission',
+            '/kontak' => 'Contact',
+            '/sarana' => 'Facilities',
+            '/info-ppdb' => 'Admission Info',
         ];
 
         foreach ($pages as $uri => $title) {
