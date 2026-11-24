@@ -31,8 +31,9 @@ return [
 
     'search' => [
         'label' => 'Search',
-        'placeholder' => 'Search pages…',
+        'placeholder' => 'Search…',
         'empty' => 'No pages match your search.',
+        'close' => 'Close search',
     ],
 
     'language' => [

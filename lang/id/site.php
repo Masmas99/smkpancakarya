@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'tagline' => 'Sekolah Menengah Kejuruan',
+    'tagline' => 'Kota Tangerang',
 
     'meta' => [
-        'title' => 'SMK Pancakarya — Sekolah Menengah Kejuruan',
+        'title' => 'SMK Pancakarya — Kota Tangerang',
         'description' => 'Website resmi SMK Pancakarya.',
     ],
 
@@ -31,8 +31,9 @@ return [
 
     'search' => [
         'label' => 'Cari',
-        'placeholder' => 'Cari halaman…',
+        'placeholder' => 'Cari…',
         'empty' => 'Tidak ada halaman yang cocok.',
+        'close' => 'Tutup pencarian',
     ],
 
     'language' => [

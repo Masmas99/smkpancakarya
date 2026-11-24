@@ -31,6 +31,7 @@ class LocaleTest extends TestCase
             ->assertSee('<html lang="id"', false)
             ->assertSee('Beranda')
             ->assertSee('<title>Prestasi — SMK Pancakarya</title>', false)
+            ->assertSee('Kota Tangerang')
             ->assertSee('Info PPDB');
     }
 

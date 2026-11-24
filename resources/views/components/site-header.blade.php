@@ -218,45 +218,6 @@
         </div>
     </div>
 
-    {{-- Panel pencarian --}}
-    <div id="site-search" class="absolute inset-x-0 top-full hidden border-t border-slate-200 bg-white shadow-xl">
-        <div class="mx-auto max-w-3xl px-4 py-4 sm:px-6">
-            <div class="relative">
-                <label for="site-search-input" class="sr-only">{{ __('site.search.label') }}</label>
-                <svg class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M19 10.5a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z" />
-                </svg>
-                <input
-                    id="site-search-input"
-                    type="search"
-                    autocomplete="off"
-                    placeholder="{{ __('site.search.placeholder') }}"
-                    class="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
-                >
-            </div>
-
-            <ul id="site-search-results" class="mt-3 max-h-80 space-y-0.5 overflow-y-auto">
-                @foreach ($searchPages as $page)
-                    <li
-                        data-search-item
-                        data-search="{{ $page['label'].' '.__('site.nav.'.$page['key'], [], 'en').' '.__('site.nav.'.$page['key'], [], 'id').' '.str_replace(['-', '.', '_'], ' ', $page['route']) }}"
-                    >
-                        <a
-                            href="{{ route($page['route']) }}"
-                            class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
-                        >
-                            {{ $page['label'] }}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-
-            <p id="site-search-empty" class="mt-3 hidden px-3 py-2 text-sm text-slate-500">
-                {{ __('site.search.empty') }}
-            </p>
-        </div>
-    </div>
-
     {{-- Navigasi seluler --}}
     <div id="mobile-nav" class="hidden border-t border-slate-200 bg-white xl:hidden">
         <nav class="mx-auto max-w-7xl space-y-1 px-4 py-4 sm:px-6" aria-label="{{ __('site.nav.mobile_label') }}">
@@ -335,12 +296,69 @@
     </div>
 </header>
 
+{{-- Overlay pencarian --}}
+<div
+    id="site-search"
+    class="fixed inset-0 z-40 hidden bg-black/60"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ __('site.search.label') }}"
+>
+    <div class="mx-auto w-full max-w-3xl px-4 pt-28 sm:px-6 sm:pt-40" data-search-dialog>
+        <div class="relative">
+            <label for="site-search-input" class="sr-only">{{ __('site.search.label') }}</label>
+            <svg class="pointer-events-none absolute left-5 top-1/2 h-6 w-6 -translate-y-1/2 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M19 10.5a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z" />
+            </svg>
+            <input
+                id="site-search-input"
+                type="search"
+                autocomplete="off"
+                placeholder="{{ __('site.search.placeholder') }}"
+                class="h-16 w-full rounded-2xl border-0 bg-white pl-14 pr-14 text-base text-slate-900 shadow-2xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 sm:h-[68px] sm:text-lg [&::-webkit-search-cancel-button]:appearance-none"
+            >
+            <button
+                id="search-close"
+                type="button"
+                aria-label="{{ __('site.search.close') }}"
+                class="absolute right-4 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+            >
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <ul id="site-search-results" class="mt-3 hidden max-h-72 overflow-y-auto rounded-2xl bg-white p-2 shadow-2xl">
+            @foreach ($searchPages as $page)
+                <li
+                    data-search-item
+                    data-search="{{ $page['label'].' '.__('site.nav.'.$page['key'], [], 'en').' '.__('site.nav.'.$page['key'], [], 'id').' '.str_replace(['-', '.', '_'], ' ', $page['route']) }}"
+                >
+                    <a
+                        href="{{ route($page['route']) }}"
+                        class="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                    >
+                        {{ $page['label'] }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+
+        <p id="site-search-empty" class="mt-3 hidden w-fit rounded-xl bg-white px-4 py-2 text-sm font-medium text-slate-500 shadow-xl">
+            {{ __('site.search.empty') }}
+        </p>
+    </div>
+</div>
+
 <script>
     (() => {
         const searchToggle = document.getElementById('search-toggle');
         const searchPanel = document.getElementById('site-search');
         const searchInput = document.getElementById('site-search-input');
         const searchEmpty = document.getElementById('site-search-empty');
+        const searchResults = document.getElementById('site-search-results');
+        const searchClose = document.getElementById('search-close');
         const searchItems = Array.from(document.querySelectorAll('[data-search-item]'));
 
         const menuToggle = document.getElementById('nav-toggle');
@@ -358,15 +376,18 @@
 
         const filterSearch = () => {
             const query = normalize(searchInput.value);
+            const hasQuery = query !== '';
             let visible = 0;
 
+            searchResults?.classList.toggle('hidden', !hasQuery);
+
             searchItems.forEach((item) => {
-                const matches = query === '' || normalize(item.dataset.search ?? '').includes(query);
+                const matches = hasQuery && normalize(item.dataset.search ?? '').includes(query);
                 item.classList.toggle('hidden', !matches);
                 visible += matches ? 1 : 0;
             });
 
-            searchEmpty?.classList.toggle('hidden', query === '' || visible > 0);
+            searchEmpty?.classList.toggle('hidden', !hasQuery || visible > 0);
         };
 
         const setMenuOpen = (open) => {
@@ -388,6 +409,7 @@
 
             searchPanel.classList.toggle('hidden', !open);
             searchToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            document.body.classList.toggle('overflow-hidden', open);
 
             if (open) {
                 setMenuOpen(false);
@@ -397,8 +419,25 @@
             }
         };
 
+        const closeSearch = () => {
+            if (!searchPanel || searchPanel.classList.contains('hidden')) {
+                return;
+            }
+
+            setSearchOpen(false);
+            searchToggle?.focus();
+        };
+
         searchToggle?.addEventListener('click', () => {
             setSearchOpen(searchPanel.classList.contains('hidden'));
+        });
+
+        searchClose?.addEventListener('click', closeSearch);
+
+        searchPanel?.addEventListener('click', (event) => {
+            if (!event.target.closest('[data-search-dialog]')) {
+                closeSearch();
+            }
         });
 
         searchInput?.addEventListener('input', filterSearch);
@@ -444,7 +483,7 @@
                 && !searchPanel.contains(event.target)
                 && !searchToggle?.contains(event.target)
             ) {
-                setSearchOpen(false);
+                closeSearch();
             }
 
             if (localeSwitcher?.open && !localeSwitcher.contains(event.target)) {
@@ -458,7 +497,7 @@
             }
 
             setMenuOpen(false);
-            setSearchOpen(false);
+            closeSearch();
 
             if (localeSwitcher?.open) {
                 localeSwitcher.removeAttribute('open');
