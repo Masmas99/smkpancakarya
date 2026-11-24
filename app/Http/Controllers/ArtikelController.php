@@ -35,6 +35,19 @@ class ArtikelController extends Controller
     }
 
     /**
+     * Tampilkan prestasi (kategori Prestasi).
+     */
+    public function prestasi(): View
+    {
+        return $this->listing(
+            Article::published()->where('category', 'prestasi'),
+            __('site.nav.achievements'),
+            __('site.articles.achievement_intro'),
+            __('site.articles.achievement_empty'),
+        );
+    }
+
+    /**
      * Tampilkan tulisan guru (kategori Blog Guru).
      */
     public function blogGuru(): View

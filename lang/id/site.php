@@ -88,6 +88,8 @@ return [
         'intro' => 'Kabar terbaru seputar kegiatan, prestasi, dan informasi sekolah.',
         'news_intro' => 'Kabar terbaru seputar kegiatan dan informasi sekolah.',
         'news_empty' => 'Belum ada berita yang dipublikasikan.',
+        'achievement_intro' => 'Capaian dan prestasi siswa SMK Pancakarya.',
+        'achievement_empty' => 'Belum ada prestasi yang dipublikasikan.',
         'blog_guru_intro' => 'Tulisan, gagasan, dan pengalaman para guru SMK Pancakarya.',
         'blog_guru_empty' => 'Belum ada tulisan guru yang dipublikasikan.',
         'latest' => 'Artikel Terbaru',

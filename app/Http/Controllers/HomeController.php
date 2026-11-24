@@ -26,6 +26,13 @@ class HomeController extends Controller
             ->simplePaginate(3)
             ->withQueryString();
 
-        return view('pages.landing.index', compact('articles', 'categories', 'activeCategory'));
+        $categoryRoutes = [
+            'berita' => route('berita.index'),
+            'prestasi' => route('prestasi'),
+            'artikel' => route('artikel.index'),
+            'blog-guru' => route('blog-guru.index'),
+        ];
+
+        return view('pages.landing.index', compact('articles', 'categories', 'activeCategory', 'categoryRoutes'));
     }
 }

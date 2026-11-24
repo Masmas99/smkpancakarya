@@ -254,6 +254,17 @@ class ArticleTest extends TestCase
             ->assertSee('Belum ada tulisan guru yang dipublikasikan.');
     }
 
+    public function test_prestasi_page_only_lists_prestasi_articles(): void
+    {
+        Article::factory()->published()->create(['title' => 'Juara Prestasi Sekolah', 'category' => 'prestasi']);
+        Article::factory()->published()->create(['title' => 'Kabar Berita Sekolah', 'category' => 'berita']);
+
+        $this->get('/prestasi')
+            ->assertOk()
+            ->assertSee('Juara Prestasi Sekolah')
+            ->assertDontSee('Kabar Berita Sekolah');
+    }
+
     public function test_homepage_does_not_show_blog_guru_articles(): void
     {
         Article::factory()->published()->create(['title' => 'Kabar Beranda Sekolah', 'category' => 'berita']);
@@ -336,7 +347,7 @@ class ArticleTest extends TestCase
             ->assertSee('Artikel Tetap Tampil');
     }
 
-    public function test_landing_page_article_section_shows_three_articles_per_page(): void
+    public function test_landing_page_article_section_shows_three_articles_and_links_to_berita(): void
     {
         foreach (range(1, 7) as $index) {
             Article::factory()->published()->create([
@@ -345,7 +356,7 @@ class ArticleTest extends TestCase
             ]);
         }
 
-        $this->get('/')
+        $response = $this->get('/')
             ->assertOk()
             ->assertSee('Muat Lebih Banyak')
             ->assertSee('Artikel Beranda 1')
@@ -353,14 +364,41 @@ class ArticleTest extends TestCase
             ->assertSee('Artikel Beranda 3')
             ->assertDontSee('Artikel Beranda 4');
 
-        $this->get('/?page=2')
+        $this->assertMatchesRegularExpression(
+            '/id="load-more"\s+href="'.preg_quote(route('berita.index'), '/').'"/',
+            $response->getContent(),
+        );
+
+        $this->get('/berita')
             ->assertOk()
             ->assertSee('Artikel Beranda 4')
-            ->assertDontSee('Artikel Beranda 7');
-
-        $this->get('/?page=3')
-            ->assertOk()
             ->assertSee('Artikel Beranda 7');
+    }
+
+    public function test_landing_page_load_more_links_to_the_matching_category_page(): void
+    {
+        foreach (range(1, 4) as $index) {
+            Article::factory()->published()->create(['title' => 'Berita '.$index, 'category' => 'berita']);
+            Article::factory()->published()->create(['title' => 'Prestasi '.$index, 'category' => 'prestasi']);
+            Article::factory()->published()->create(['title' => 'Blog Guru '.$index, 'category' => 'blog-guru']);
+        }
+
+        $targets = [
+            'berita' => route('berita.index'),
+            'prestasi' => route('prestasi'),
+            'artikel' => route('artikel.index'),
+            'blog-guru' => route('blog-guru.index'),
+        ];
+
+        foreach ($targets as $category => $url) {
+            $response = $this->get('/?category='.$category)->assertOk();
+
+            $this->assertMatchesRegularExpression(
+                '/id="load-more"\s+href="'.preg_quote($url, '/').'"/',
+                $response->getContent(),
+                'Tombol muat lebih banyak untuk tab '.$category.' tidak mengarah ke '.$url,
+            );
+        }
     }
 
     public function test_landing_page_defaults_to_berita_tab(): void

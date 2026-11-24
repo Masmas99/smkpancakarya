@@ -192,10 +192,10 @@
                     </div>
 
                     @if ($articles->hasMorePages())
-                        <div id="load-more-wrapper" class="mt-12 flex justify-center">
+                        <div class="mt-12 flex justify-center">
                             <a
                                 id="load-more"
-                                href="{{ $articles->nextPageUrl() }}"
+                                href="{{ $categoryRoutes[$activeCategory] }}"
                                 class="inline-flex items-center justify-center rounded-md bg-blue-950 px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                             >
                                 {{ __('site.articles.load_more') }}
@@ -205,50 +205,6 @@
                 @endif
             </div>
         </section>
-
-        <script>
-        (() => {
-            const button = document.getElementById('load-more');
-            const grid = document.getElementById('article-grid');
-            if (! button || ! grid) return;
-
-            button.addEventListener('click', (event) => {
-                event.preventDefault();
-
-                const target = button.getAttribute('href');
-                if (! target) return;
-
-                button.setAttribute('aria-busy', 'true');
-                button.classList.add('pointer-events-none', 'opacity-60');
-
-                fetch(target, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                    .then((response) => response.ok ? response.text() : Promise.reject())
-                    .then((html) => {
-                        const doc = new DOMParser().parseFromString(html, 'text/html');
-                        const nextGrid = doc.getElementById('article-grid');
-                        const nextButton = doc.getElementById('load-more');
-
-                        if (nextGrid) {
-                            while (nextGrid.firstElementChild) {
-                                grid.appendChild(nextGrid.firstElementChild);
-                            }
-                        }
-
-                        if (nextButton) {
-                            button.setAttribute('href', nextButton.getAttribute('href'));
-                            button.removeAttribute('aria-busy');
-                            button.classList.remove('pointer-events-none', 'opacity-60');
-                        } else {
-                            const wrapper = document.getElementById('load-more-wrapper');
-                            if (wrapper) wrapper.remove();
-                        }
-                    })
-                    .catch(() => {
-                        window.location.href = target;
-                    });
-            });
-        })();
-        </script>
     </main>
 
     <script>

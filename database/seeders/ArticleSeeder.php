@@ -112,6 +112,13 @@ class ArticleSeeder extends Seeder
                 'body' => "Tim guru SMK Pancakarya meraih penghargaan pada ajang inovasi pembelajaran tingkat daerah. Karya yang diusung mengangkat pemanfaatan media pembelajaran interaktif untuk meningkatkan keterlibatan siswa.\n\nInovasi tersebut lahir dari kebutuhan menyesuaikan metode pembelajaran dengan gaya belajar siswa saat ini. Media yang dikembangkan memadukan materi praktik dengan studi kasus dari dunia industri.\n\nPenghargaan ini menjadi penyemangat bagi para guru untuk terus berkreasi. Sekolah akan mendorong lebih banyak inovasi pembelajaran yang berdampak langsung pada kualitas lulusan.",
             ],
             [
+                'title' => 'Siswa Raih Juara pada Kompetisi Bahasa Inggris Tingkat Kota',
+                'category' => 'prestasi',
+                'author' => 'staff',
+                'excerpt' => 'Siswa SMK Pancakarya menunjukkan kemampuan bahasa Inggris dan meraih juara pada kompetisi tingkat kota.',
+                'body' => "Siswa SMK Pancakarya meraih juara pada kompetisi bahasa Inggris tingkat kota. Kompetisi ini menguji kemampuan berbicara, menulis, serta pemahaman siswa terhadap teks berbahasa Inggris.\n\nPersiapan dilakukan melalui latihan rutin bersama guru pembimbing. Siswa juga dilatih percaya diri menyampaikan gagasan di depan juri dan peserta lain.\n\nSekolah menyampaikan apresiasi atas prestasi yang diraih. Kemampuan berbahasa Inggris dinilai penting sebagai bekal siswa memasuki dunia kerja yang semakin terhubung secara global.",
+            ],
+            [
                 'title' => 'Pernyataan Resmi Sekolah Terkait Jadwal Penerimaan Peserta Didik Baru',
                 'category' => 'press-release',
                 'author' => 'admin',

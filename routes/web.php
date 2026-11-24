@@ -12,10 +12,10 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('artikel', [ArtikelController::class, 'index'])->name('artikel.index');
 Route::get('artikel/{article}', [ArtikelController::class, 'show'])->name('artikel.show');
 Route::get('berita', [ArtikelController::class, 'berita'])->name('berita.index');
+Route::get('prestasi', [ArtikelController::class, 'prestasi'])->name('prestasi');
 Route::get('blog-guru', [ArtikelController::class, 'blogGuru'])->name('blog-guru.index');
 
 Route::view('kompetensi-keahlian', 'pages.landing.kompetensi-keahlian')->name('kompetensi-keahlian');
-Route::view('prestasi', 'pages.landing.prestasi')->name('prestasi');
 Route::view('profil', 'pages.landing.profil')->name('profil');
 Route::view('profil/about', 'pages.landing.profil.about')->name('profil.about');
 Route::view('profil/kesiswaan', 'pages.landing.profil.kesiswaan')->name('profil.kesiswaan');

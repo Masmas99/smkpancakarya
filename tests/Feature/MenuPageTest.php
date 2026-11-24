@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MenuPageTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_menu_pages_are_accessible_and_show_their_title(): void
     {
         $pages = [
