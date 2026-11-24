@@ -24,7 +24,7 @@ class ArticleRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:180'],
             'slug' => ['nullable', 'string', 'max:180'],
-            'category' => ['nullable', Rule::in(array_keys(Article::CATEGORIES))],
+            'category' => ['nullable', Rule::in(array_keys(Article::categoryOptions()))],
             'excerpt' => ['nullable', 'string', 'max:300'],
             'body' => ['required', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],

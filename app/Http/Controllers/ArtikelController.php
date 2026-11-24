@@ -4,20 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 
 class ArtikelController extends Controller
 {
     /**
-     * Tampilkan daftar artikel yang sudah terbit.
+     * Tampilkan seluruh artikel yang sudah terbit.
      */
     public function index(): View
     {
-        $articles = Article::published()
-            ->with('author')
-            ->latest('published_at')
-            ->simplePaginate(9);
+        return $this->listing(
+            Article::published(),
+            __('site.nav.articles'),
+            __('site.articles.intro'),
+            __('site.articles.empty'),
+        );
+    }
 
-        return view('pages.landing.artikel.index', compact('articles'));
+    /**
+     * Tampilkan berita (kategori Berita).
+     */
+    public function berita(): View
+    {
+        return $this->listing(
+            Article::published()->where('category', Article::DEFAULT_CATEGORY),
+            __('site.nav.news'),
+            __('site.articles.news_intro'),
+            __('site.articles.news_empty'),
+        );
+    }
+
+    /**
+     * Tampilkan tulisan guru (kategori Blog Guru).
+     */
+    public function blogGuru(): View
+    {
+        return $this->listing(
+            Article::published()->where('category', Article::BLOG_CATEGORY),
+            __('site.nav.blog_guru'),
+            __('site.articles.blog_guru_intro'),
+            __('site.articles.blog_guru_empty'),
+        );
     }
 
     /**
@@ -28,5 +55,18 @@ class ArtikelController extends Controller
         abort_unless($article->isPublished(), 404);
 
         return view('pages.landing.artikel.show', compact('article'));
+    }
+
+    /**
+     * @param  Builder<Article>  $query
+     */
+    private function listing(Builder $query, string $title, string $description, string $empty): View
+    {
+        $articles = $query
+            ->with('author')
+            ->latest('published_at')
+            ->simplePaginate(9);
+
+        return view('pages.landing.artikel.index', compact('articles', 'title', 'description', 'empty'));
     }
 }

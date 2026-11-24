@@ -21,6 +21,7 @@ class HomeController extends Controller
         }
 
         $articles = Article::published()
+            ->whereIn('category', array_keys($categories))
             ->when($activeCategory !== '', fn ($query) => $query->where('category', $activeCategory))
             ->latest('published_at')
             ->simplePaginate(6)

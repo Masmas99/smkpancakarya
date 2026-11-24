@@ -1,15 +1,15 @@
-<x-layouts.public :title="__('site.nav.articles')" :description="__('site.articles.meta_description')">
+<x-layouts.public :title="$title" :description="$description">
     <main>
         <x-page-heading
-            :title="__('site.nav.articles')"
-            :description="__('site.articles.intro')"
+            :title="$title"
+            :description="$description"
         />
 
         <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
             @if ($articles->isEmpty())
                 <div class="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
                     <p class="text-base font-medium text-slate-500">
-                        {{ __('site.articles.empty') }}
+                        {{ $empty }}
                     </p>
                 </div>
             @else
@@ -20,7 +20,7 @@
                 </div>
 
                 @if ($articles->hasPages())
-                    <nav class="mt-10 flex items-center justify-between gap-3" aria-label="Navigasi halaman artikel">
+                    <nav class="mt-10 flex items-center justify-between gap-3" aria-label="Navigasi halaman {{ $title }}">
                         @if ($articles->onFirstPage())
                             <span class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-400" aria-disabled="true">
                                 &larr; {{ __('site.articles.previous') }}

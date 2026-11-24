@@ -21,7 +21,11 @@ class Article extends Model
 
     public const DEFAULT_CATEGORY = 'berita';
 
+    public const BLOG_CATEGORY = 'blog-guru';
+
     /**
+     * Kategori berita yang tampil pada tab beranda.
+     *
      * @var array<string, string>
      */
     public const CATEGORIES = [
@@ -100,7 +104,19 @@ class Article extends Model
 
     public function categoryLabel(): string
     {
-        return self::CATEGORIES[$this->category] ?? self::CATEGORIES[self::DEFAULT_CATEGORY];
+        $categories = self::categoryOptions();
+
+        return $categories[$this->category] ?? $categories[self::DEFAULT_CATEGORY];
+    }
+
+    /**
+     * Seluruh pilihan kategori artikel, termasuk Blog Guru.
+     *
+     * @return array<string, string>
+     */
+    public static function categoryOptions(): array
+    {
+        return self::CATEGORIES + [self::BLOG_CATEGORY => 'Blog Guru'];
     }
 
     public function excerptText(int $limit = 160): string

@@ -222,6 +222,65 @@ class ArticleTest extends TestCase
         $this->assertSame('berita-sama-2', $second->slug);
     }
 
+    public function test_berita_page_only_lists_news_category_articles(): void
+    {
+        Article::factory()->published()->create(['title' => 'Kabar Berita Sekolah', 'category' => 'berita']);
+        Article::factory()->published()->create(['title' => 'Juara Prestasi Sekolah', 'category' => 'prestasi']);
+        Article::factory()->published()->create(['title' => 'Tulisan Guru Pertama', 'category' => 'blog-guru']);
+
+        $this->get('/berita')
+            ->assertOk()
+            ->assertSee('Kabar Berita Sekolah')
+            ->assertDontSee('Juara Prestasi Sekolah')
+            ->assertDontSee('Tulisan Guru Pertama');
+    }
+
+    public function test_blog_guru_page_only_lists_blog_guru_articles(): void
+    {
+        Article::factory()->published()->create(['title' => 'Kabar Berita Sekolah', 'category' => 'berita']);
+        Article::factory()->published()->create(['title' => 'Tulisan Guru Pertama', 'category' => 'blog-guru']);
+
+        $this->get('/blog-guru')
+            ->assertOk()
+            ->assertSee('Blog Guru')
+            ->assertSee('Tulisan Guru Pertama')
+            ->assertDontSee('Kabar Berita Sekolah');
+    }
+
+    public function test_blog_guru_page_shows_empty_state(): void
+    {
+        $this->get('/blog-guru')
+            ->assertOk()
+            ->assertSee('Belum ada tulisan guru yang dipublikasikan.');
+    }
+
+    public function test_homepage_does_not_show_blog_guru_articles(): void
+    {
+        Article::factory()->published()->create(['title' => 'Kabar Beranda Sekolah', 'category' => 'berita']);
+        Article::factory()->published()->create(['title' => 'Tulisan Guru di Beranda', 'category' => 'blog-guru']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Kabar Beranda Sekolah')
+            ->assertDontSee('Tulisan Guru di Beranda');
+    }
+
+    public function test_staff_can_create_a_blog_guru_article(): void
+    {
+        $staff = User::factory()->create();
+
+        $this->actingAs($staff)->post('/staff/artikel', [
+            'title' => 'Refleksi Mengajar di Kelas',
+            'body' => 'Isi tulisan guru.',
+            'category' => 'blog-guru',
+            'status' => Article::STATUS_PUBLISHED,
+        ])->assertRedirect(route('staff.artikel.index'));
+
+        $this->get('/blog-guru')
+            ->assertOk()
+            ->assertSee('Refleksi Mengajar di Kelas');
+    }
+
     public function test_landing_page_shows_article_section_below_welcome(): void
     {
         $this->get('/')
