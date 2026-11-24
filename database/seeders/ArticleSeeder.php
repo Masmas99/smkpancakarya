@@ -32,8 +32,9 @@ class ArticleSeeder extends Seeder
         foreach ($this->articles() as $index => $data) {
             $author = $data['author'] === 'staff' ? $staff : $admin;
             $slug = Str::slug($data['title']);
+            $model = Article::modelForCategory($data['category']);
 
-            Article::updateOrCreate(
+            $model::updateOrCreate(
                 ['slug' => $slug],
                 [
                     'user_id' => $author->id,
@@ -120,17 +121,31 @@ class ArticleSeeder extends Seeder
             ],
             [
                 'title' => 'Pernyataan Resmi Sekolah Terkait Jadwal Penerimaan Peserta Didik Baru',
-                'category' => 'press-release',
+                'category' => 'artikel',
                 'author' => 'admin',
                 'excerpt' => 'Informasi resmi mengenai jadwal dan ketentuan penerimaan peserta didik baru tahun ajaran 2026/2027.',
                 'body' => "Sehubungan dengan berlangsungnya proses penerimaan peserta didik baru, SMK Pancakarya menyampaikan informasi resmi mengenai jadwal dan ketentuan pendaftaran untuk tahun ajaran 2026/2027.\n\nSeluruh informasi yang berkaitan dengan PPDB hanya disampaikan melalui kanal resmi sekolah. Calon peserta didik dan orang tua diimbau berhati-hati terhadap informasi yang sumbernya tidak dapat diverifikasi.\n\nPanitia PPDB membuka layanan informasi pada jam kerja. Pertanyaan dapat disampaikan langsung ke sekretariat sekolah atau melalui kontak resmi yang tercantum pada situs sekolah.",
             ],
             [
                 'title' => 'SMK Pancakarya Perluas Kerja Sama dengan Dunia Industri',
-                'category' => 'press-release',
+                'category' => 'artikel',
                 'author' => 'admin',
                 'excerpt' => 'Kerja sama baru mencakup praktik kerja lapangan, pelatihan guru, dan penyaluran lulusan.',
                 'body' => "SMK Pancakarya menandatangani kerja sama dengan sejumlah perusahaan mitra untuk memperluas program link and match. Kerja sama mencakup penyelenggaraan praktik kerja lapangan, pelatihan guru, dan penyaluran lulusan.\n\nMelalui kemitraan ini, kurikulum sekolah dapat diselaraskan dengan kebutuhan industri. Perusahaan mitra akan terlibat dalam penyusunan materi praktik serta penilaian kompetensi siswa.\n\nSekolah berharap kerja sama tersebut memberikan manfaat bagi siswa, guru, dan industri. Kolaborasi berkelanjutan menjadi kunci dalam menyiapkan lulusan yang kompeten dan siap kerja.",
+            ],
+            [
+                'title' => 'Mengenal Budaya Kerja Industri bagi Siswa Vokasi',
+                'category' => 'artikel',
+                'author' => 'admin',
+                'excerpt' => 'Pemahaman budaya kerja membantu siswa vokasi beradaptasi lebih cepat saat memasuki dunia industri.',
+                'body' => "Budaya kerja industri merupakan bagian penting yang perlu dikenalkan kepada siswa vokasi sejak dini. Selain kompetensi teknis, siswa perlu memahami disiplin waktu, tanggung jawab, dan komunikasi profesional di tempat kerja.\n\nSekolah dapat menanamkan nilai-nilai tersebut melalui pembiasaan di kelas praktik, proyek kolaboratif, dan simulasi dunia kerja. Keteladanan guru serta keterlibatan industri mitra memperkuat pemahaman siswa terhadap standar kerja yang berlaku.\n\nDengan mengenal budaya kerja sejak awal, siswa diharapkan lebih percaya diri dan siap menghadapi tantangan di dunia industri. Pembiasaan ini juga membentuk sikap kerja yang positif dan berkelanjutan.",
+            ],
+            [
+                'title' => 'Peran Orang Tua dalam Mendukung Pendidikan Vokasi',
+                'category' => 'artikel',
+                'author' => 'staff',
+                'excerpt' => 'Dukungan orang tua menjadi faktor penting dalam keberhasilan siswa menempuh pendidikan vokasi.',
+                'body' => "Pendidikan vokasi membutuhkan dukungan keluarga agar siswa dapat mengikuti pembelajaran praktik dengan optimal. Orang tua berperan mendampingi siswa dalam mengatur waktu belajar, menyiapkan kebutuhan praktik, dan memberikan motivasi.\n\nKomunikasi yang baik antara orang tua dan sekolah juga membantu memantau perkembangan siswa. Dengan begitu, kendala belajar dapat segera diketahui dan dicarikan solusinya bersama.\n\nDukungan orang tua bukan hanya soal fasilitas, tetapi juga kepercayaan terhadap pilihan pendidikan anak. Sikap tersebut akan menumbuhkan rasa percaya diri siswa dalam menyiapkan masa depan.",
             ],
             [
                 'title' => 'Strategi Pembelajaran Berbasis Proyek di Kelas Vokasi',
@@ -177,7 +192,7 @@ class ArticleSeeder extends Seeder
         $palettes = [
             'berita' => ['#0b1f3a', '#1e40af', '#fbbf24'],
             'prestasi' => ['#231400', '#b45309', '#fcd34d'],
-            'press-release' => ['#052e2b', '#0f766e', '#fbbf24'],
+            'artikel' => ['#052e2b', '#0f766e', '#fbbf24'],
             'blog-guru' => ['#1e1b4b', '#6d28d9', '#fbbf24'],
         ];
 

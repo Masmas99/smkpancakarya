@@ -5,7 +5,7 @@
 
 <article class="group flex flex-col border-b border-slate-200 pb-6">
     <a
-        href="{{ route('artikel.show', $article) }}"
+        href="{{ $article->url() }}"
         class="block overflow-hidden bg-slate-100"
         tabindex="-1"
         aria-hidden="true"
@@ -33,7 +33,7 @@
 
     <h3 class="mt-4 text-lg font-bold leading-snug text-blue-950">
         <a
-            href="{{ route('artikel.show', $article) }}"
+            href="{{ $article->url() }}"
             class="transition hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
         >
             {{ $article->title }}

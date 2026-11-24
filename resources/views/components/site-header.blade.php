@@ -2,7 +2,7 @@
     $links = [
         ['label' => __('site.nav.home'), 'route' => 'home'],
         ['label' => __('site.nav.study_programs'), 'route' => 'kompetensi-keahlian'],
-        ['label' => __('site.nav.achievements'), 'route' => 'prestasi'],
+        ['label' => __('site.nav.achievements'), 'route' => 'prestasi.index'],
         [
             'label' => __('site.nav.profile'),
             'route' => 'profil',
@@ -20,7 +20,7 @@
     $searchPages = [
         ['label' => __('site.nav.home'), 'route' => 'home'],
         ['label' => __('site.nav.study_programs'), 'route' => 'kompetensi-keahlian'],
-        ['label' => __('site.nav.achievements'), 'route' => 'prestasi'],
+        ['label' => __('site.nav.achievements'), 'route' => 'prestasi.index'],
         ['label' => __('site.nav.profile'), 'route' => 'profil'],
         ['label' => __('site.nav.about'), 'route' => 'profil.about'],
         ['label' => __('site.nav.student_affairs'), 'route' => 'profil.kesiswaan'],
@@ -89,7 +89,8 @@
             <nav class="hidden items-center gap-0.5 xl:flex" aria-label="{{ __('site.nav.label') }}">
                 @foreach ($links as $link)
                     @php
-                        $isActive = request()->routeIs($link['route'], $link['route'].'.*');
+                        $baseRoute = str_contains($link['route'], '.') ? str($link['route'])->before('.')->toString() : $link['route'];
+                        $isActive = request()->routeIs($link['route'], $baseRoute.'.*');
                     @endphp
 
                     @if (! empty($link['children']))
@@ -195,7 +196,8 @@
         <nav class="mx-auto max-w-7xl space-y-1 px-4 py-4 sm:px-6" aria-label="{{ __('site.nav.mobile_label') }}">
             @foreach ($links as $link)
                 @php
-                    $isActive = request()->routeIs($link['route'], $link['route'].'.*');
+                    $baseRoute = str_contains($link['route'], '.') ? str($link['route'])->before('.')->toString() : $link['route'];
+                    $isActive = request()->routeIs($link['route'], $baseRoute.'.*');
                 @endphp
 
                 <a

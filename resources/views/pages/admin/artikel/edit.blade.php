@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Ubah Artikel
+                Ubah {{ $sectionLabel }}
             </h2>
 
-            <a href="{{ route('admin.artikel.index') }}" class="text-sm font-medium text-blue-700 transition hover:text-blue-800">
+            <a href="{{ route($routePrefix.'.index') }}" class="text-sm font-medium text-blue-700 transition hover:text-blue-800">
                 &larr; Kembali ke daftar
             </a>
         </div>

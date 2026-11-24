@@ -85,7 +85,7 @@ return [
 
     'articles' => [
         'meta_description' => 'Berita dan informasi terbaru dari SMK Pancakarya Kota Tangerang.',
-        'intro' => 'Kabar terbaru seputar kegiatan, prestasi, dan informasi sekolah.',
+        'intro' => 'Artikel dan gagasan seputar pendidikan vokasi di SMK Pancakarya.',
         'news_intro' => 'Kabar terbaru seputar kegiatan dan informasi sekolah.',
         'news_empty' => 'Belum ada berita yang dipublikasikan.',
         'achievement_intro' => 'Capaian dan prestasi siswa SMK Pancakarya.',
@@ -102,6 +102,7 @@ return [
         'empty_hint' => 'Artikel yang diterbitkan melalui panel admin atau staff akan tampil di sini.',
         'read_more' => 'Baca selengkapnya',
         'back' => 'Kembali ke daftar artikel',
+        'back_to' => 'Kembali ke daftar :section',
         'by' => 'Oleh',
         'previous' => 'Sebelumnya',
         'next' => 'Berikutnya',

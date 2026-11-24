@@ -2,6 +2,93 @@
 
 use Illuminate\Support\Str;
 
+/*
+|--------------------------------------------------------------------------
+| Koneksi Database Konten
+|--------------------------------------------------------------------------
+|
+| Setiap kategori konten memiliki database sendiri. Pada MySQL, database
+| dibuat otomatis oleh migrasi bila pengguna database memiliki izin.
+| Pada SQLite, setiap kategori memakai berkas database terpisah.
+|
+*/
+
+$articleConnections = [];
+
+if (in_array(env('DB_CONNECTION', 'sqlite'), ['mysql', 'mariadb'], true)) {
+    $articleDatabase = [
+        'driver' => env('DB_CONNECTION', 'mysql'),
+        'host' => env('DB_HOST', '127.0.0.1'),
+        'port' => env('DB_PORT', '3306'),
+        'username' => env('DB_USERNAME', 'root'),
+        'password' => env('DB_PASSWORD', ''),
+        'unix_socket' => env('DB_SOCKET', ''),
+        'charset' => env('DB_CHARSET', 'utf8mb4'),
+        'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+        'prefix' => '',
+        'prefix_indexes' => true,
+        'strict' => true,
+        'engine' => null,
+        'options' => extension_loaded('pdo_mysql') ? array_filter([
+            PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+        ]) : [],
+    ];
+
+    $articleConnections = [
+        'articles_berita' => array_merge($articleDatabase, [
+            'database' => env('DB_BERITA_DATABASE', 'smkpancakarya_berita'),
+        ]),
+        'articles_prestasi' => array_merge($articleDatabase, [
+            'database' => env('DB_PRESTASI_DATABASE', 'smkpancakarya_prestasi'),
+        ]),
+        'articles_artikel' => array_merge($articleDatabase, [
+            'database' => env('DB_ARTIKEL_DATABASE', 'smkpancakarya_artikel'),
+        ]),
+        'articles_blog_guru' => array_merge($articleDatabase, [
+            'database' => env('DB_BLOG_GURU_DATABASE', 'smkpancakarya_blog_guru'),
+        ]),
+    ];
+} else {
+    $articleConnections = [
+        'articles_berita' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_BERITA_DATABASE', database_path('artikel-berita.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+        ],
+        'articles_prestasi' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_PRESTASI_DATABASE', database_path('artikel-prestasi.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+        ],
+        'articles_artikel' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_ARTIKEL_DATABASE', database_path('artikel-artikel.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+        ],
+        'articles_blog_guru' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_BLOG_GURU_DATABASE', database_path('artikel-blog-guru.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+        ],
+    ];
+}
+
 return [
 
     /*
@@ -30,6 +117,8 @@ return [
     */
 
     'connections' => [
+
+        ...$articleConnections,
 
         'sqlite' => [
             'driver' => 'sqlite',

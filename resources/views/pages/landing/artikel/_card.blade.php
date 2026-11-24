@@ -5,7 +5,7 @@
 
 <article class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
     <a
-        href="{{ route('artikel.show', $article) }}"
+        href="{{ $article->url() }}"
         class="block aspect-[16/10] overflow-hidden bg-slate-100"
         tabindex="-1"
         aria-hidden="true"
@@ -38,7 +38,7 @@
 
         <h3 class="mt-2 text-lg font-bold leading-snug text-slate-900">
             <a
-                href="{{ route('artikel.show', $article) }}"
+                href="{{ $article->url() }}"
                 class="transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
             >
                 {{ $article->title }}
@@ -50,7 +50,7 @@
         </p>
 
         <a
-            href="{{ route('artikel.show', $article) }}"
+            href="{{ $article->url() }}"
             class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-700 transition hover:text-blue-800"
         >
             {{ __('site.articles.read_more') }}

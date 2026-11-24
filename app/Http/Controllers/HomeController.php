@@ -20,15 +20,16 @@ class HomeController extends Controller
             $activeCategory = Article::DEFAULT_CATEGORY;
         }
 
-        $articles = Article::published()
-            ->when($activeCategory !== 'artikel', fn ($query) => $query->where('category', $activeCategory))
+        $model = Article::models()[$activeCategory] ?? Article::modelForCategory(Article::DEFAULT_CATEGORY);
+
+        $articles = $model::published()
             ->latest('published_at')
             ->simplePaginate(3)
             ->withQueryString();
 
         $categoryRoutes = [
             'berita' => route('berita.index'),
-            'prestasi' => route('prestasi'),
+            'prestasi' => route('prestasi.index'),
             'artikel' => route('artikel.index'),
             'blog-guru' => route('blog-guru.index'),
         ];

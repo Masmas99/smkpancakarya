@@ -24,7 +24,6 @@ class ArticleRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:180'],
             'slug' => ['nullable', 'string', 'max:180'],
-            'category' => ['nullable', Rule::in(array_keys(Article::categoryOptions()))],
             'excerpt' => ['nullable', 'string', 'max:300'],
             'body' => ['required', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
@@ -40,7 +39,6 @@ class ArticleRequest extends FormRequest
         return [
             'title' => 'judul',
             'slug' => 'slug',
-            'category' => 'kategori',
             'excerpt' => 'ringkasan',
             'body' => 'isi artikel',
             'cover_image' => 'gambar sampul',
@@ -56,7 +54,6 @@ class ArticleRequest extends FormRequest
         return [
             'title.required' => 'Judul artikel wajib diisi.',
             'title.max' => 'Judul artikel maksimal 180 karakter.',
-            'category.in' => 'Kategori artikel tidak valid.',
             'excerpt.max' => 'Ringkasan maksimal 300 karakter.',
             'body.required' => 'Isi artikel wajib diisi.',
             'cover_image.image' => 'Gambar sampul harus berupa file gambar.',

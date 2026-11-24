@@ -14,6 +14,18 @@ class ArticleFactory extends Factory
     protected $model = Article::class;
 
     /**
+     * Buat model konkret sesuai kategori pada atribut.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    public function newModel(array $attributes = [])
+    {
+        $model = Article::modelForCategory($attributes['category'] ?? Article::DEFAULT_CATEGORY);
+
+        return new $model($attributes);
+    }
+
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>

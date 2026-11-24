@@ -123,7 +123,7 @@ class LandingPageTest extends TestCase
 
         foreach ([
             'kompetensi-keahlian',
-            'prestasi',
+            'prestasi.index',
             'profil',
             'profil.about',
             'profil.kesiswaan',

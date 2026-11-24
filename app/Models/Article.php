@@ -10,7 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class Article extends Model
+/**
+ * Basis bersama untuk seluruh konten artikel.
+ *
+ * Setiap kategori memiliki model, tabel, dan koneksi database sendiri:
+ * Berita, Prestasi, Artikel, dan BlogGuru.
+ */
+abstract class Article extends Model
 {
     /** @use HasFactory<ArticleFactory> */
     use HasFactory;
@@ -21,21 +27,35 @@ class Article extends Model
 
     public const DEFAULT_CATEGORY = 'berita';
 
+    public const PRESTASI_CATEGORY = 'prestasi';
+
+    public const ARTICLE_CATEGORY = 'artikel';
+
     public const BLOG_CATEGORY = 'blog-guru';
 
     /**
-     * Kategori berita yang tampil pada tab beranda.
+     * Slug bagian publik sekaligus kategori konten.
+     */
+    public const SECTION = '';
+
+    /**
+     * Nama koneksi database khusus kategori.
+     */
+    public const CONNECTION = '';
+
+    /**
+     * Kategori artikel yang tampil pada tab beranda.
      *
      * @var array<string, string>
      */
     public const CATEGORIES = [
         'berita' => 'Berita',
         'prestasi' => 'Prestasi',
-        'press-release' => 'Press Release',
+        'artikel' => 'Artikel',
     ];
 
     /**
-     * Tab kategori pada beranda. Tab "Artikel" menampilkan seluruh artikel.
+     * Tab kategori pada beranda. Setiap tab mewakili satu kategori.
      *
      * @var array<string, string>
      */
@@ -75,6 +95,21 @@ class Article extends Model
         ];
     }
 
+    /**
+     * Gunakan koneksi database khusus kategori di luar lingkungan pengujian.
+     *
+     * Pengujian memakai satu koneksi SQLite in-memory agar seluruh tabel
+     * kategori dapat diuji dalam satu transaksi.
+     */
+    public function getConnectionName()
+    {
+        if (app()->environment('testing')) {
+            return config('database.default');
+        }
+
+        return static::CONNECTION;
+    }
+
     protected static function booted(): void
     {
         static::saving(function (Article $article) {
@@ -85,9 +120,16 @@ class Article extends Model
         });
     }
 
+    protected static function newFactory(): ArticleFactory
+    {
+        return ArticleFactory::new();
+    }
+
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        $user = (new User)->setConnection(config('database.default'));
+
+        return new BelongsTo($user->newQuery(), $this, 'user_id', $user->getKeyName(), 'author');
     }
 
     /**
@@ -129,6 +171,59 @@ class Article extends Model
     public static function categoryOptions(): array
     {
         return self::CATEGORIES + [self::BLOG_CATEGORY => 'Blog Guru'];
+    }
+
+    /**
+     * Daftar model per kategori konten.
+     *
+     * @return array<string, class-string<Article>>
+     */
+    public static function models(): array
+    {
+        return [
+            self::DEFAULT_CATEGORY => Berita::class,
+            self::PRESTASI_CATEGORY => Prestasi::class,
+            self::ARTICLE_CATEGORY => Artikel::class,
+            self::BLOG_CATEGORY => BlogGuru::class,
+        ];
+    }
+
+    /**
+     * Model yang menangani kategori tertentu.
+     *
+     * @return class-string<Article>
+     */
+    public static function modelForCategory(string $category): string
+    {
+        return self::models()[$category] ?? Berita::class;
+    }
+
+    /**
+     * Bagian URL publik sesuai kategori artikel.
+     */
+    public function section(): string
+    {
+        return static::SECTION;
+    }
+
+    public function sectionLabel(): string
+    {
+        return match ($this->section()) {
+            'prestasi' => __('site.nav.achievements'),
+            'artikel' => __('site.nav.articles'),
+            'blog-guru' => __('site.nav.blog_guru'),
+            default => __('site.nav.news'),
+        };
+    }
+
+    public function url(): string
+    {
+        return route($this->section().'.show', $this);
+    }
+
+    public function sectionUrl(): string
+    {
+        return route($this->section().'.index');
     }
 
     public function excerptText(int $limit = 160): string

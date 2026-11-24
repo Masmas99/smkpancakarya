@@ -10,12 +10,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="space-y-4 p-6 text-gray-900">
                     <p>{{ __("Anda masuk sebagai Staff.") }}</p>
-                    <a
-                        href="{{ route('staff.artikel.index') }}"
-                        class="inline-flex items-center gap-2 rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-                    >
-                        Kelola Artikel
-                    </a>
+
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        @foreach (['berita' => 'Berita', 'prestasi' => 'Prestasi', 'artikel' => 'Artikel', 'blog-guru' => 'Blog Guru'] as $section => $label)
+                            <a
+                                href="{{ route('staff.'.$section.'.index') }}"
+                                class="inline-flex items-center justify-center rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                            >
+                                Kelola {{ $label }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

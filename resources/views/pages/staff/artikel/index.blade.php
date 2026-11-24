@@ -2,17 +2,17 @@
     <x-slot name="header">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Kelola Artikel
+                Kelola {{ $sectionLabel }}
             </h2>
 
             <a
-                href="{{ route('staff.artikel.create') }}"
+                href="{{ route($routePrefix.'.create') }}"
                 class="inline-flex items-center gap-2 rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
             >
                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
-                Tulis Artikel
+                Tulis {{ $sectionLabel }}
             </a>
         </div>
     </x-slot>
@@ -25,12 +25,12 @@
                 </div>
             @endif
 
-            <form method="GET" action="{{ route('staff.artikel.index') }}" class="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <form method="GET" action="{{ route($routePrefix.'.index') }}" class="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <input
                     name="q"
                     type="search"
                     value="{{ $search }}"
-                    placeholder="Cari judul atau ringkasanâ€¦"
+                    placeholder="Cari judul atau ringkasan..."
                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:max-w-sm"
                 >
 
@@ -51,7 +51,7 @@
                 </button>
 
                 @if ($search !== '' || $status !== '')
-                    <a href="{{ route('staff.artikel.index') }}" class="text-sm font-medium text-gray-600 transition hover:text-gray-900">
+                    <a href="{{ route($routePrefix.'.index') }}" class="text-sm font-medium text-gray-600 transition hover:text-gray-900">
                         Reset
                     </a>
                 @endif
@@ -63,7 +63,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                                    Artikel
+                                    Konten
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
                                     Status
@@ -105,7 +105,7 @@
                                     </td>
 
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                                        {{ $article->author?->name ?? 'â€”' }}
+                                        {{ $article->author?->name ?? '-' }}
                                     </td>
 
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
@@ -115,7 +115,7 @@
                                     <td class="whitespace-nowrap px-6 py-4 text-right text-sm">
                                         <div class="flex items-center justify-end gap-3">
                                             <a
-                                                href="{{ route('staff.artikel.edit', $article) }}"
+                                                href="{{ route($routePrefix.'.edit', $article) }}"
                                                 class="font-medium text-blue-700 transition hover:text-blue-800"
                                             >
                                                 Ubah
@@ -123,8 +123,8 @@
 
                                             <form
                                                 method="POST"
-                                                action="{{ route('staff.artikel.destroy', $article) }}"
-                                                onsubmit="return confirm('Hapus artikel ini? Tindakan ini tidak dapat dibatalkan.');"
+                                                action="{{ route($routePrefix.'.destroy', $article) }}"
+                                                onsubmit="return confirm('Hapus konten ini? Tindakan ini tidak dapat dibatalkan.');"
                                             >
                                                 @csrf
                                                 @method('DELETE')
@@ -139,7 +139,7 @@
                             @empty
                                 <tr>
                                     <td colspan="5" class="px-6 py-14 text-center text-sm text-gray-500">
-                                        Belum ada artikel. Klik <span class="font-semibold text-gray-700">Tulis Artikel</span> untuk membuat yang pertama.
+                                        Belum ada {{ strtolower($sectionLabel) }}. Klik <span class="font-semibold text-gray-700">Tulis {{ $sectionLabel }}</span> untuk membuat yang pertama.
                                     </td>
                                 </tr>
                             @endforelse
@@ -149,7 +149,7 @@
             </div>
 
             @if ($articles->hasPages())
-                <nav class="flex items-center justify-between gap-3" aria-label="Navigasi halaman artikel">
+                <nav class="flex items-center justify-between gap-3" aria-label="Navigasi halaman konten">
                     @if ($articles->onFirstPage())
                         <span class="inline-flex items-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-400" aria-disabled="true">
                             &larr; Sebelumnya

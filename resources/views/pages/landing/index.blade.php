@@ -165,7 +165,9 @@
                     @foreach ($categories as $key => $label)
                         @php $isActive = $activeCategory === $key; @endphp
                         <a
-                            href="{{ route('home', $key === 'berita' ? [] : ['category' => $key]) }}#artikel"
+                            href="{{ $categoryRoutes[$key] }}"
+                            data-article-tab
+                            data-category="{{ $key }}"
                             @class([
                                 'rounded-full px-2 py-2.5 text-center text-sm font-bold transition sm:px-4 sm:text-base',
                                 'bg-amber-400 text-blue-950' => $isActive,
@@ -181,13 +183,13 @@
                 @if ($articles->isEmpty())
                     <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-14 text-center">
                         <p class="text-base font-semibold text-slate-700">
-                            {{ $activeCategory === 'artikel' ? __('site.articles.empty') : __('site.articles.empty_category') }}
+                            {{ __('site.articles.empty_category') }}
                         </p>
                     </div>
                 @else
                     <div id="article-grid" class="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($articles as $article)
-                            @include('pages.landing.artikel._card-featured', ['article' => $article])
+                            @include("pages.landing.{$activeCategory}._card-featured", ['article' => $article])
                         @endforeach
                     </div>
 
@@ -237,6 +239,128 @@
             } else if (typeof reduceMotion.addListener === 'function') {
                 reduceMotion.addListener(syncPlayback);
             }
+        })();
+
+        (() => {
+            let articleSection = document.getElementById('artikel');
+
+            if (!articleSection
+                || typeof window.fetch !== 'function'
+                || typeof window.AbortController !== 'function'
+                || typeof window.DOMParser !== 'function') {
+                return;
+            }
+
+            // Bersihkan URL lama yang masih membawa parameter kategori dan anchor artikel.
+            const pageUrl = new URL(window.location.href);
+            let urlChanged = false;
+
+            if (pageUrl.searchParams.has('category')) {
+                pageUrl.searchParams.delete('category');
+                urlChanged = true;
+            }
+
+            if (pageUrl.hash === '#artikel') {
+                pageUrl.hash = '';
+                urlChanged = true;
+            }
+
+            if (urlChanged) {
+                window.history.replaceState(null, '', pageUrl.href);
+            }
+
+            let activeRequest = null;
+
+            const setLoading = (loading) => {
+                // Jangan meredupkan konten lama; cukup tandai sedang memuat
+                // agar tidak muncul area putih saat menunggu respons.
+                articleSection.setAttribute('aria-busy', loading ? 'true' : 'false');
+            };
+
+            const loadCategory = (link) => {
+                const fetchUrl = new URL(window.location.href);
+                fetchUrl.hash = '';
+                fetchUrl.search = '';
+                fetchUrl.searchParams.set('category', link.dataset.category);
+
+                if (activeRequest) {
+                    activeRequest.abort();
+                }
+
+                const controller = new AbortController();
+                activeRequest = controller;
+
+                setLoading(true);
+
+                fetch(fetchUrl.href, {
+                    headers: {
+                        Accept: 'text/html',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    signal: controller.signal,
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`Gagal memuat kategori (${response.status}).`);
+                        }
+
+                        return response.text();
+                    })
+                    .then((html) => {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextSection = doc.getElementById('artikel');
+
+                        if (!nextSection) {
+                            throw new Error('Bagian artikel tidak ditemukan.');
+                        }
+
+                        articleSection.replaceWith(nextSection);
+                        articleSection = nextSection;
+
+                        // URL alamat tetap bersih; kategori hanya dipakai untuk request internal.
+
+                        // Kembalikan fokus ke tab aktif agar navigasi keyboard tetap nyaman.
+                        articleSection
+                            .querySelector('[data-article-tab][aria-current="page"]')
+                            ?.focus({ preventScroll: true });
+                    })
+                    .catch((error) => {
+                        if (error.name === 'AbortError') {
+                            return;
+                        }
+
+                        // Jika AJAX gagal, buka halaman kategori lengkap.
+                        window.location.href = link.href;
+                    })
+                    .finally(() => {
+                        if (activeRequest === controller) {
+                            activeRequest = null;
+                            setLoading(false);
+                        }
+                    });
+            };
+
+            document.addEventListener('click', (event) => {
+                const link = event.target.closest?.('a[data-article-tab]');
+
+                if (!link
+                    || event.defaultPrevented
+                    || event.button !== 0
+                    || event.metaKey
+                    || event.ctrlKey
+                    || event.shiftKey
+                    || event.altKey) {
+                    return;
+                }
+
+                if (!link.dataset.category) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                loadCategory(link);
+            });
         })();
     </script>
 </x-layouts.public>

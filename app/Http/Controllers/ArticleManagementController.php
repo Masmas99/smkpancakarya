@@ -22,7 +22,19 @@ abstract class ArticleManagementController extends Controller
     abstract protected function routePrefix(): string;
 
     /**
-     * Tampilkan daftar seluruh artikel untuk dikelola.
+     * Kategori artikel yang dikelola pada modul ini.
+     */
+    abstract protected function section(): string;
+
+    /**
+     * Model Eloquent yang menyimpan konten modul ini.
+     *
+     * @return class-string<Article>
+     */
+    abstract protected function modelClass(): string;
+
+    /**
+     * Tampilkan daftar artikel sesuai kategori modul.
      */
     public function index(Request $request): View
     {
@@ -33,7 +45,9 @@ abstract class ArticleManagementController extends Controller
             $status = '';
         }
 
-        $articles = Article::query()
+        $model = $this->modelClass();
+
+        $articles = $model::query()
             ->with('author')
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
@@ -46,7 +60,13 @@ abstract class ArticleManagementController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view($this->viewPrefix().'.index', compact('articles', 'search', 'status'));
+        return view($this->viewPrefix().'.index', [
+            'articles' => $articles,
+            'search' => $search,
+            'status' => $status,
+            'sectionLabel' => $this->sectionLabel(),
+            'routePrefix' => $this->routePrefix(),
+        ]);
     }
 
     /**
@@ -54,70 +74,96 @@ abstract class ArticleManagementController extends Controller
      */
     public function create(): View
     {
-        return view($this->viewPrefix().'.create');
+        return view($this->viewPrefix().'.create', [
+            'sectionLabel' => $this->sectionLabel(),
+            'routePrefix' => $this->routePrefix(),
+        ]);
     }
 
     /**
-     * Simpan artikel baru.
+     * Simpan artikel baru pada kategori modul.
      */
     public function store(ArticleRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
         $data['slug'] = $request->filled('slug') ? (string) $request->input('slug') : null;
-        $data['category'] = $data['category'] ?? Article::DEFAULT_CATEGORY;
+        $data['category'] = $this->section();
         $data['status'] = $data['status'] ?? Article::STATUS_DRAFT;
         $data['published_at'] = $data['status'] === Article::STATUS_PUBLISHED ? now() : null;
         $data['cover_image'] = $this->storeCover($request);
 
-        Article::create($data);
+        $model = $this->modelClass();
+        $model::create($data);
 
-        return $this->redirectToIndex('Artikel berhasil dibuat.');
+        return $this->redirectToIndex($this->sectionLabel().' berhasil dibuat.');
     }
 
     /**
      * Tampilkan formulir ubah artikel.
      */
-    public function edit(Article $artikel): View
+    public function edit(string $artikel): View
     {
-        return view($this->viewPrefix().'.edit', compact('artikel'));
+        $article = $this->findArticle($artikel);
+
+        return view($this->viewPrefix().'.edit', [
+            'artikel' => $article,
+            'sectionLabel' => $this->sectionLabel(),
+            'routePrefix' => $this->routePrefix(),
+        ]);
     }
 
     /**
-     * Perbarui artikel.
+     * Perbarui artikel pada kategori modul.
      */
-    public function update(ArticleRequest $request, Article $artikel): RedirectResponse
+    public function update(ArticleRequest $request, string $artikel): RedirectResponse
     {
+        $article = $this->findArticle($artikel);
+
         $data = $request->validated();
         $data['slug'] = $request->filled('slug') ? (string) $request->input('slug') : null;
-        $data['category'] = $data['category'] ?? Article::DEFAULT_CATEGORY;
+        $data['category'] = $this->section();
 
         $data['published_at'] = $data['status'] === Article::STATUS_PUBLISHED
-            ? ($artikel->published_at ?? now())
+            ? ($article->published_at ?? now())
             : null;
 
         if ($request->hasFile('cover_image')) {
-            $this->deleteCover($artikel);
+            $this->deleteCover($article);
             $data['cover_image'] = $this->storeCover($request);
         } else {
             unset($data['cover_image']);
         }
 
-        $artikel->update($data);
+        $article->update($data);
 
-        return $this->redirectToIndex('Artikel berhasil diperbarui.');
+        return $this->redirectToIndex($this->sectionLabel().' berhasil diperbarui.');
     }
 
     /**
-     * Hapus artikel.
+     * Hapus artikel pada kategori modul.
      */
-    public function destroy(Article $artikel): RedirectResponse
+    public function destroy(string $artikel): RedirectResponse
     {
-        $this->deleteCover($artikel);
+        $article = $this->findArticle($artikel);
 
-        $artikel->delete();
+        $this->deleteCover($article);
 
-        return $this->redirectToIndex('Artikel berhasil dihapus.');
+        $article->delete();
+
+        return $this->redirectToIndex($this->sectionLabel().' berhasil dihapus.');
+    }
+
+    protected function sectionLabel(): string
+    {
+        return Article::categoryOptions()[$this->section()] ?? 'Artikel';
+    }
+
+    private function findArticle(string $slug): Article
+    {
+        $model = $this->modelClass();
+
+        return $model::where('slug', $slug)->firstOrFail();
     }
 
     private function redirectToIndex(string $message): RedirectResponse
