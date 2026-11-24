@@ -1,6 +1,4 @@
 @php
-    $locale = app()->getLocale();
-
     $links = [
         ['label' => __('site.nav.home'), 'route' => 'home'],
         ['label' => __('site.nav.study_programs'), 'route' => 'kompetensi-keahlian'],
@@ -20,38 +18,21 @@
     ];
 
     $searchPages = [
-        ['label' => __('site.nav.home'), 'route' => 'home', 'key' => 'home'],
-        ['label' => __('site.nav.study_programs'), 'route' => 'kompetensi-keahlian', 'key' => 'study_programs'],
-        ['label' => __('site.nav.achievements'), 'route' => 'prestasi', 'key' => 'achievements'],
-        ['label' => __('site.nav.profile'), 'route' => 'profil', 'key' => 'profile'],
-        ['label' => __('site.nav.about'), 'route' => 'profil.about', 'key' => 'about'],
-        ['label' => __('site.nav.student_affairs'), 'route' => 'profil.kesiswaan', 'key' => 'student_affairs'],
-        ['label' => __('site.nav.academics'), 'route' => 'profil.akademik', 'key' => 'academics'],
-        ['label' => __('site.nav.vision_mission'), 'route' => 'visi-dan-misi', 'key' => 'vision_mission'],
-        ['label' => __('site.nav.contact'), 'route' => 'kontak', 'key' => 'contact'],
-        ['label' => __('site.nav.facilities'), 'route' => 'sarana', 'key' => 'facilities'],
-        ['label' => __('site.nav.admission'), 'route' => 'info-ppdb', 'key' => 'admission'],
+        ['label' => __('site.nav.home'), 'route' => 'home'],
+        ['label' => __('site.nav.study_programs'), 'route' => 'kompetensi-keahlian'],
+        ['label' => __('site.nav.achievements'), 'route' => 'prestasi'],
+        ['label' => __('site.nav.profile'), 'route' => 'profil'],
+        ['label' => __('site.nav.about'), 'route' => 'profil.about'],
+        ['label' => __('site.nav.student_affairs'), 'route' => 'profil.kesiswaan'],
+        ['label' => __('site.nav.academics'), 'route' => 'profil.akademik'],
+        ['label' => __('site.nav.vision_mission'), 'route' => 'visi-dan-misi'],
+        ['label' => __('site.nav.contact'), 'route' => 'kontak'],
+        ['label' => __('site.nav.facilities'), 'route' => 'sarana'],
+        ['label' => __('site.nav.admission'), 'route' => 'info-ppdb'],
     ];
 @endphp
 
 <header class="sticky top-0 z-50 border-b border-slate-200 bg-white">
-    {{-- Bendera (sprite) --}}
-    <svg class="absolute h-0 w-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <symbol id="flag-id" viewBox="0 0 24 16">
-            <rect width="24" height="8" fill="#DC2626" />
-            <rect y="8" width="24" height="8" fill="#F8FAFC" />
-            <rect width="24" height="16" rx="2" fill="none" stroke="#CBD5E1" />
-        </symbol>
-        <symbol id="flag-en" viewBox="0 0 24 16">
-            <rect width="24" height="16" rx="2" fill="#012169" />
-            <path d="M0 0 24 16M24 0 0 16" stroke="#FFFFFF" stroke-width="3.5" />
-            <path d="M0 0 24 16M24 0 0 16" stroke="#C8102E" stroke-width="1.8" />
-            <path d="M12 0v16M0 8h24" stroke="#FFFFFF" stroke-width="5" />
-            <path d="M12 0v16M0 8h24" stroke="#C8102E" stroke-width="3" />
-            <rect width="24" height="16" rx="2" fill="none" stroke="#CBD5E1" />
-        </symbol>
-    </svg>
-
     <div class="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:h-20 lg:px-8">
         {{-- Logo --}}
         <a
@@ -148,43 +129,6 @@
                 </svg>
             </button>
 
-            {{-- Bahasa --}}
-            <details class="group relative hidden md:block" data-locale-switcher>
-                <summary
-                    class="flex cursor-pointer list-none items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 [&::-webkit-details-marker]:hidden"
-                >
-                    <svg class="h-3.5 w-5" viewBox="0 0 24 16" aria-hidden="true">
-                        <use href="#flag-{{ $locale }}" />
-                    </svg>
-                    <span class="uppercase">{{ $locale }}</span>
-                    <svg class="h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                    </svg>
-                    <span class="sr-only">{{ __('site.language.label') }}</span>
-                </summary>
-
-                <div class="absolute right-0 top-full z-50 mt-1 w-56 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
-                    @foreach (['en', 'id'] as $option)
-                        <a
-                            href="{{ route('language.switch', $option) }}"
-                            hreflang="{{ $option }}"
-                            lang="{{ $option }}"
-                            @if ($locale === $option) aria-current="true" @endif
-                            @class([
-                                'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600',
-                                'bg-blue-50 text-blue-700' => $locale === $option,
-                                'text-slate-700 hover:bg-slate-100 hover:text-blue-700' => $locale !== $option,
-                            ])
-                        >
-                            <svg class="h-3.5 w-5 shrink-0" viewBox="0 0 24 16" aria-hidden="true">
-                                <use href="#flag-{{ $option }}" />
-                            </svg>
-                            {{ __('site.language.'.$option) }}
-                        </a>
-                    @endforeach
-                </div>
-            </details>
-
             {{-- Tombol utama --}}
             <a
                 href="{{ route('info-ppdb') }}"
@@ -267,31 +211,6 @@
             >
                 {{ __('site.nav.admission') }}
             </a>
-
-            <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    {{ __('site.language.label') }}
-                </span>
-
-                @foreach (['en', 'id'] as $option)
-                    <a
-                        href="{{ route('language.switch', $option) }}"
-                        hreflang="{{ $option }}"
-                        lang="{{ $option }}"
-                        @if ($locale === $option) aria-current="true" @endif
-                        @class([
-                            'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium transition',
-                            'bg-blue-50 text-blue-700' => $locale === $option,
-                            'text-slate-600 hover:bg-slate-100 hover:text-blue-700' => $locale !== $option,
-                        ])
-                    >
-                        <svg class="h-3.5 w-5" viewBox="0 0 24 16" aria-hidden="true">
-                            <use href="#flag-{{ $option }}" />
-                        </svg>
-                        {{ __('site.language.'.$option) }}
-                    </a>
-                @endforeach
-            </div>
         </nav>
     </div>
 </header>
@@ -333,7 +252,7 @@
             @foreach ($searchPages as $page)
                 <li
                     data-search-item
-                    data-search="{{ $page['label'].' '.__('site.nav.'.$page['key'], [], 'en').' '.__('site.nav.'.$page['key'], [], 'id').' '.str_replace(['-', '.', '_'], ' ', $page['route']) }}"
+                    data-search="{{ $page['label'].' '.str_replace(['-', '.', '_'], ' ', $page['route']) }}"
                 >
                     <a
                         href="{{ route($page['route']) }}"
@@ -363,7 +282,6 @@
 
         const menuToggle = document.getElementById('nav-toggle');
         const menu = document.getElementById('mobile-nav');
-        const localeSwitcher = document.querySelector('[data-locale-switcher]');
 
         const openIcon = menuToggle?.querySelector('[data-icon="open"]');
         const closeIcon = menuToggle?.querySelector('[data-icon="close"]');
@@ -472,10 +390,6 @@
             link.addEventListener('click', () => setMenuOpen(false));
         });
 
-        localeSwitcher?.querySelectorAll('a').forEach((link) => {
-            link.addEventListener('click', () => localeSwitcher.removeAttribute('open'));
-        });
-
         document.addEventListener('click', (event) => {
             if (
                 searchPanel
@@ -484,10 +398,6 @@
                 && !searchToggle?.contains(event.target)
             ) {
                 closeSearch();
-            }
-
-            if (localeSwitcher?.open && !localeSwitcher.contains(event.target)) {
-                localeSwitcher.removeAttribute('open');
             }
         });
 
@@ -498,11 +408,6 @@
 
             setMenuOpen(false);
             closeSearch();
-
-            if (localeSwitcher?.open) {
-                localeSwitcher.removeAttribute('open');
-                localeSwitcher.querySelector('summary')?.focus();
-            }
         });
 
         window.addEventListener('resize', () => {

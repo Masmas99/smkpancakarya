@@ -36,12 +36,6 @@ return [
         'close' => 'Tutup pencarian',
     ],
 
-    'language' => [
-        'label' => 'Ubah bahasa',
-        'en' => 'Inggris',
-        'id' => 'Bahasa Indonesia',
-    ],
-
     'menu' => [
         'open' => 'Buka menu navigasi',
         'close' => 'Tutup menu navigasi',
