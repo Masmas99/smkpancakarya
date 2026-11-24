@@ -11,7 +11,7 @@
         <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/figtree-latin-400.woff2') }}" crossorigin>
 
         <!-- Styles -->
-        @vite('resources/css/app.css')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
         <x-site-header />

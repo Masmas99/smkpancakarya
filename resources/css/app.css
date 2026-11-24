@@ -29,3 +29,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hero video fills the viewport below the top bar and sticky site header on every device. */
+.hero-full {
+    min-height: calc(100vh - 6.25rem);
+}
+
+@supports (height: 100dvh) {
+    .hero-full {
+        min-height: calc(100dvh - 6.25rem);
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero-full {
+        min-height: calc(100vh - 7.25rem);
+    }
+}
+
+@supports (height: 100dvh) {
+    @media (min-width: 1024px) {
+        .hero-full {
+            min-height: calc(100dvh - 7.25rem);
+        }
+    }
+}
