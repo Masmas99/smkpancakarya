@@ -227,7 +227,9 @@ class ArticleTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('Artikel dan Berita Terbaru')
-            ->assertSee('Lihat Semua Artikel')
+            ->assertSee('Berita')
+            ->assertSee('Prestasi')
+            ->assertSee('Press Release')
             ->assertSee('Belum ada artikel yang dipublikasikan.');
     }
 
@@ -238,13 +240,12 @@ class ArticleTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('Artikel dan Berita Terbaru')
-            ->assertSee('Berita Terbaru di Beranda')
-            ->assertSee('Lihat Semua Artikel');
+            ->assertSee('Berita Terbaru di Beranda');
     }
 
-    public function test_public_article_index_shows_category_tabs(): void
+    public function test_landing_page_shows_category_tabs(): void
     {
-        $this->get('/artikel')
+        $this->get('/')
             ->assertOk()
             ->assertSee('Artikel dan Berita Terbaru')
             ->assertSee('Berita')
@@ -252,26 +253,46 @@ class ArticleTest extends TestCase
             ->assertSee('Press Release');
     }
 
-    public function test_public_article_index_can_filter_by_category(): void
+    public function test_landing_page_article_section_can_filter_by_category(): void
     {
         Article::factory()->published()->create(['title' => 'Berita Umum Sekolah', 'category' => 'berita']);
         Article::factory()->published()->create(['title' => 'Juara Lomba Kompetensi', 'category' => 'prestasi']);
         Article::factory()->published()->create(['title' => 'Rilis Pers Sekolah', 'category' => 'press-release']);
 
-        $this->get('/artikel?category=prestasi')
+        $this->get('/?category=prestasi')
             ->assertOk()
             ->assertSee('Juara Lomba Kompetensi')
             ->assertDontSee('Berita Umum Sekolah')
             ->assertDontSee('Rilis Pers Sekolah');
     }
 
-    public function test_public_article_index_ignores_unknown_category(): void
+    public function test_landing_page_ignores_unknown_article_category(): void
     {
         Article::factory()->published()->create(['title' => 'Artikel Tetap Tampil', 'category' => 'berita']);
 
-        $this->get('/artikel?category=tidak-ada')
+        $this->get('/?category=tidak-ada')
             ->assertOk()
             ->assertSee('Artikel Tetap Tampil');
+    }
+
+    public function test_landing_page_article_section_can_load_more_articles(): void
+    {
+        foreach (range(1, 7) as $index) {
+            Article::factory()->published()->create([
+                'title' => 'Artikel Beranda '.$index,
+                'published_at' => now()->subMinutes($index),
+            ]);
+        }
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Muat Lebih Banyak')
+            ->assertSee('Artikel Beranda 1')
+            ->assertDontSee('Artikel Beranda 7');
+
+        $this->get('/?page=2')
+            ->assertOk()
+            ->assertSee('Artikel Beranda 7');
     }
 
     public function test_staff_can_choose_an_article_category(): void

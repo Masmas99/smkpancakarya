@@ -152,47 +152,103 @@
             </div>
         </section>
 
-        <section class="border-t border-slate-200 bg-white py-14 sm:py-16" aria-labelledby="articles-title">
+        <section id="artikel" class="border-t border-slate-200 bg-white py-16 sm:py-20" aria-labelledby="articles-title">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-wrap items-end justify-between gap-4">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                            {{ __('site.nav.articles') }}
-                        </p>
-                        <h2 id="articles-title" class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                            {{ __('site.articles.heading') }}
-                        </h2>
-                    </div>
+                <h2 id="articles-title" class="text-center text-3xl font-bold tracking-tight text-blue-950 sm:text-4xl lg:text-5xl">
+                    {{ __('site.articles.heading') }}
+                </h2>
 
-                    <a
-                        href="{{ route('artikel.index') }}"
-                        class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
-                    >
-                        {{ __('site.articles.view_all') }}
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                    </a>
-                </div>
+                <nav
+                    class="mx-auto mt-8 grid max-w-5xl grid-cols-3 gap-1 rounded-full bg-blue-950 p-1.5"
+                    aria-label="{{ __('site.articles.filter_label') }}"
+                >
+                    @foreach ($categories as $key => $label)
+                        @php $isActive = $activeCategory === $key; @endphp
+                        <a
+                            href="{{ $isActive ? route('home') : route('home', ['category' => $key]) }}#artikel"
+                            @class([
+                                'rounded-full px-2 py-2.5 text-center text-sm font-bold transition sm:px-4 sm:text-base',
+                                'bg-amber-400 text-blue-950' => $isActive,
+                                'text-amber-400 hover:text-amber-300' => ! $isActive,
+                            ])
+                            @if ($isActive) aria-current="page" @endif
+                        >
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </nav>
 
-                @if (($latestArticles ?? collect())->isEmpty())
-                    <div class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+                @if ($articles->isEmpty())
+                    <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-14 text-center">
                         <p class="text-base font-semibold text-slate-700">
-                            {{ __('site.articles.empty') }}
-                        </p>
-                        <p class="mt-1 text-sm text-slate-500">
-                            {{ __('site.articles.empty_hint') }}
+                            {{ $activeCategory !== '' ? __('site.articles.empty_category') : __('site.articles.empty') }}
                         </p>
                     </div>
                 @else
-                    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        @foreach ($latestArticles as $article)
-                            @include('pages.landing.artikel._card', ['article' => $article])
+                    <div id="article-grid" class="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach ($articles as $article)
+                            @include('pages.landing.artikel._card-featured', ['article' => $article])
                         @endforeach
                     </div>
+
+                    @if ($articles->hasMorePages())
+                        <div id="load-more-wrapper" class="mt-12 flex justify-center">
+                            <a
+                                id="load-more"
+                                href="{{ $articles->nextPageUrl() }}"
+                                class="inline-flex items-center justify-center rounded-md bg-blue-950 px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                            >
+                                {{ __('site.articles.load_more') }}
+                            </a>
+                        </div>
+                    @endif
                 @endif
             </div>
         </section>
+
+        <script>
+        (() => {
+            const button = document.getElementById('load-more');
+            const grid = document.getElementById('article-grid');
+            if (! button || ! grid) return;
+
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const target = button.getAttribute('href');
+                if (! target) return;
+
+                button.setAttribute('aria-busy', 'true');
+                button.classList.add('pointer-events-none', 'opacity-60');
+
+                fetch(target, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then((response) => response.ok ? response.text() : Promise.reject())
+                    .then((html) => {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextGrid = doc.getElementById('article-grid');
+                        const nextButton = doc.getElementById('load-more');
+
+                        if (nextGrid) {
+                            while (nextGrid.firstElementChild) {
+                                grid.appendChild(nextGrid.firstElementChild);
+                            }
+                        }
+
+                        if (nextButton) {
+                            button.setAttribute('href', nextButton.getAttribute('href'));
+                            button.removeAttribute('aria-busy');
+                            button.classList.remove('pointer-events-none', 'opacity-60');
+                        } else {
+                            const wrapper = document.getElementById('load-more-wrapper');
+                            if (wrapper) wrapper.remove();
+                        }
+                    })
+                    .catch(() => {
+                        window.location.href = target;
+                    });
+            });
+        })();
+        </script>
     </main>
 
     <script>
