@@ -33,6 +33,15 @@ class LandingPageTest extends TestCase
         }
     }
 
+    public function test_header_shows_search_language_switch_and_primary_action(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('aria-label="Cari"', false)
+            ->assertSee('aria-label="Bahasa Indonesia"', false)
+            ->assertSee('bg-blue-700', false);
+    }
+
     public function test_navigation_links_point_to_menu_pages(): void
     {
         $response = $this->get('/');
