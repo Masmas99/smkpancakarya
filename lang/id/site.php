@@ -29,6 +29,13 @@ return [
         'home' => 'Beranda',
     ],
 
+    'hero' => [
+        'eyebrow' => 'Selamat datang di',
+        'title' => 'SMK Pancakarya',
+        'subtitle' => 'Membentuk generasi terampil, berkarakter, dan siap kerja di Kota Tangerang.',
+        'secondary' => 'Kenali Kami',
+    ],
+
     'search' => [
         'label' => 'Cari',
         'placeholder' => 'Cari…',
