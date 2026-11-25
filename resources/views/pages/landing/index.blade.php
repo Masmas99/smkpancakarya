@@ -231,19 +231,19 @@
                         </p>
                     </div>
                 @else
-                    <div class="mt-10 columns-2 gap-4 sm:columns-3 lg:columns-4">
+                    <div class="mt-10 columns-2 gap-2 sm:columns-3 sm:gap-3 lg:columns-4 xl:columns-5">
                         @foreach ($galleryPhotos as $photo)
-                            <figure class="group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-slate-200 shadow-sm">
+                            <figure class="group relative mb-2 break-inside-avoid overflow-hidden rounded-lg bg-slate-200 shadow-sm sm:mb-3">
                                 <img
                                     src="{{ $photo->imageUrl() }}"
                                     alt="{{ $photo->title ?: __('site.gallery.photo_alt') }}"
-                                    class="block h-auto w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03]"
+                                    class="block aspect-[4/3] w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03]"
                                     loading="lazy"
                                     decoding="async"
                                 >
 
                                 @if (filled($photo->title))
-                                    <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 via-slate-950/35 to-transparent p-4 pt-12 text-sm font-semibold leading-snug text-white opacity-100 sm:opacity-0 sm:transition sm:duration-300 sm:group-hover:opacity-100">
+                                    <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 via-slate-950/35 to-transparent p-2.5 pt-8 text-xs font-semibold leading-snug text-white opacity-100 sm:opacity-0 sm:transition sm:duration-300 sm:group-hover:opacity-100">
                                         {{ $photo->title }}
                                     </figcaption>
                                 @endif
