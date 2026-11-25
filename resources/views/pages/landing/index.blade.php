@@ -266,69 +266,131 @@
 
         <div
             id="gallery-lightbox"
-            class="fixed inset-0 z-[100] hidden bg-slate-950/95 backdrop-blur-sm"
+            class="fixed inset-0 z-[100] hidden overflow-y-auto bg-slate-950/70 p-2 backdrop-blur-sm sm:p-6"
             role="dialog"
             aria-modal="true"
             aria-label="{{ __('site.gallery.lightbox_label') }}"
             tabindex="-1"
         >
-            <div class="flex h-full w-full">
-                <div class="hidden w-24 shrink-0 overflow-y-auto border-r border-white/10 bg-slate-950/60 p-3 md:block lg:w-28">
-                    <div class="flex flex-col gap-2" data-lightbox-thumbs></div>
-                </div>
-
-                <div class="relative flex min-w-0 flex-1 flex-col">
-                    <div class="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">
-                            {{ __('site.gallery.heading') }}
-                        </span>
-
-                        <button
-                            type="button"
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                            data-lightbox-close
-                            aria-label="{{ __('site.gallery.close') }}"
+            <div class="flex min-h-full items-center justify-center">
+                <div
+                    class="flex w-full max-w-6xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5"
+                    data-lightbox-panel
+                >
+                    <div class="relative flex min-h-[12rem] items-center justify-center bg-slate-100 p-2 sm:p-3" data-lightbox-stage>
+                        <img
+                            src=""
+                            alt=""
+                            class="block h-auto max-h-[calc(100dvh_-_11rem)] w-auto max-w-full select-none rounded-md object-contain sm:max-h-[calc(100dvh_-_14rem)]"
+                            data-lightbox-image
+                            draggable="false"
                         >
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
-                            </svg>
-                        </button>
-                    </div>
 
-                    <div class="relative flex min-h-0 flex-1 items-center justify-center px-3 pb-3 sm:px-10" data-lightbox-stage>
                         <button
                             type="button"
-                            class="absolute left-1 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/60 text-white transition hover:bg-slate-900/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:left-4"
+                            class="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-md ring-1 ring-black/5 transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 sm:left-4"
                             data-lightbox-prev
                             aria-label="{{ __('site.gallery.prev') }}"
                         >
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
                             </svg>
                         </button>
 
-                        <img
-                            src=""
-                            alt=""
-                            class="block max-h-full max-w-full select-none object-contain shadow-2xl"
-                            data-lightbox-image
-                        >
-
                         <button
                             type="button"
-                            class="absolute right-1 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/60 text-white transition hover:bg-slate-900/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:right-4"
+                            class="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-md ring-1 ring-black/5 transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 sm:right-4"
                             data-lightbox-next
                             aria-label="{{ __('site.gallery.next') }}"
                         >
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
                     </div>
 
-                    <div class="flex items-center justify-between gap-4 border-t border-white/10 px-4 py-3 sm:px-6">
-                        <p class="truncate text-sm font-semibold text-white" data-lightbox-caption></p>
-                        <span class="shrink-0 text-xs font-bold tracking-[0.2em] text-white/70" data-lightbox-counter></span>
+                    <div class="flex items-center gap-1.5 border-t border-slate-200 px-2 py-2 sm:gap-2 sm:px-3">
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                            data-lightbox-thumbs-prev
+                            aria-label="{{ __('site.gallery.scroll_prev') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
+                            </svg>
+                        </button>
+
+                        <div class="flex min-w-0 flex-1 gap-1.5 overflow-x-auto px-0.5 py-0.5 sm:gap-2" data-lightbox-thumbs></div>
+
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                            data-lightbox-thumbs-next
+                            aria-label="{{ __('site.gallery.scroll_next') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 border-t border-slate-200 px-2 py-3 sm:gap-4 sm:px-4">
+                        <div class="flex min-w-0 items-center gap-1.5 sm:gap-2.5">
+                            <button
+                                type="button"
+                                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                                data-lightbox-play
+                                data-label-play="{{ __('site.gallery.play') }}"
+                                data-label-pause="{{ __('site.gallery.pause') }}"
+                                aria-label="{{ __('site.gallery.play') }}"
+                                aria-pressed="false"
+                            >
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-lightbox-play-icon>
+                                    <path d="M8 5.14v13.72L19 12z" />
+                                </svg>
+                                <svg class="hidden h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-lightbox-pause-icon>
+                                    <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+                                </svg>
+                            </button>
+
+                            <button
+                                type="button"
+                                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                                data-lightbox-prev
+                                aria-label="{{ __('site.gallery.prev') }}"
+                            >
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
+                                </svg>
+                            </button>
+
+                            <button
+                                type="button"
+                                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                                data-lightbox-next
+                                aria-label="{{ __('site.gallery.next') }}"
+                            >
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                            <span class="shrink-0 rounded-md bg-slate-100 px-2 py-1 text-[11px] font-bold tracking-[0.15em] text-slate-700" data-lightbox-counter aria-live="polite"></span>
+
+                            <p class="min-w-0 truncate text-sm font-semibold text-slate-700" data-lightbox-caption></p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white transition hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                            data-lightbox-close
+                            aria-label="{{ __('site.gallery.close') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -501,15 +563,24 @@
             const caption = lightbox.querySelector('[data-lightbox-caption]');
             const counter = lightbox.querySelector('[data-lightbox-counter]');
             const thumbsContainer = lightbox.querySelector('[data-lightbox-thumbs]');
+            const thumbsPrevButton = lightbox.querySelector('[data-lightbox-thumbs-prev]');
+            const thumbsNextButton = lightbox.querySelector('[data-lightbox-thumbs-next]');
             const closeButton = lightbox.querySelector('[data-lightbox-close]');
-            const prevButton = lightbox.querySelector('[data-lightbox-prev]');
-            const nextButton = lightbox.querySelector('[data-lightbox-next]');
+            const prevButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-prev]'));
+            const nextButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-next]'));
+            const playButton = lightbox.querySelector('[data-lightbox-play]');
+            const playIcon = lightbox.querySelector('[data-lightbox-play-icon]');
+            const pauseIcon = lightbox.querySelector('[data-lightbox-pause-icon]');
 
             const thumbClasses = {
-                base: 'block w-full overflow-hidden rounded-md border-2 opacity-60 transition hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70',
-                active: 'border-white opacity-100',
+                base: 'block h-14 w-14 shrink-0 overflow-hidden rounded-md border-2 opacity-60 transition hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 sm:h-16 sm:w-16',
+                active: 'border-blue-600 opacity-100',
                 idle: 'border-transparent',
             };
+
+            const slideIntervalMs = 5000;
+            const playLabel = playButton?.dataset.labelPlay || 'Putar otomatis';
+            const pauseLabel = playButton?.dataset.labelPause || 'Hentikan putar otomatis';
 
             const thumbs = triggers.map((trigger, index) => {
                 const thumb = document.createElement('button');
@@ -521,7 +592,8 @@
                 thumbImage.src = trigger.dataset.gallerySrc || '';
                 thumbImage.alt = '';
                 thumbImage.loading = 'lazy';
-                thumbImage.className = 'block h-auto w-full';
+                thumbImage.decoding = 'async';
+                thumbImage.className = 'block h-full w-full object-cover';
 
                 thumb.appendChild(thumbImage);
                 thumb.addEventListener('click', () => show(index));
@@ -533,8 +605,25 @@
             let currentIndex = 0;
             let lastFocused = null;
             let touchStartX = null;
+            let slideTimer = null;
 
             const pad = (value) => String(value).padStart(2, '0');
+
+            const syncPlayButton = (playing) => {
+                playIcon?.classList.toggle('hidden', playing);
+                pauseIcon?.classList.toggle('hidden', !playing);
+                playButton?.setAttribute('aria-pressed', playing ? 'true' : 'false');
+                playButton?.setAttribute('aria-label', playing ? pauseLabel : playLabel);
+            };
+
+            const stopSlideshow = () => {
+                if (slideTimer !== null) {
+                    window.clearInterval(slideTimer);
+                    slideTimer = null;
+                }
+
+                syncPlayButton(false);
+            };
 
             const show = (index) => {
                 currentIndex = (index + triggers.length) % triggers.length;
@@ -554,22 +643,30 @@
 
                     if (active) {
                         thumb.setAttribute('aria-current', 'true');
-                        thumb.scrollIntoView({ block: 'nearest' });
+                        thumb.scrollIntoView({ block: 'nearest', inline: 'nearest' });
                     } else {
                         thumb.removeAttribute('aria-current');
                     }
                 });
             };
 
+            const startSlideshow = () => {
+                stopSlideshow();
+                syncPlayButton(true);
+                slideTimer = window.setInterval(() => show(currentIndex + 1), slideIntervalMs);
+            };
+
             const open = (index, trigger) => {
                 lastFocused = trigger || null;
-                show(index);
+                stopSlideshow();
                 lightbox.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                show(index);
                 lightbox.focus({ preventScroll: true });
             };
 
             const close = () => {
+                stopSlideshow();
                 lightbox.classList.add('hidden');
                 document.body.style.overflow = '';
                 image.removeAttribute('src');
@@ -586,11 +683,27 @@
             });
 
             closeButton?.addEventListener('click', close);
-            prevButton?.addEventListener('click', () => show(currentIndex - 1));
-            nextButton?.addEventListener('click', () => show(currentIndex + 1));
+            prevButtons.forEach((button) => button.addEventListener('click', () => show(currentIndex - 1)));
+            nextButtons.forEach((button) => button.addEventListener('click', () => show(currentIndex + 1)));
+
+            playButton?.addEventListener('click', () => {
+                if (slideTimer === null) {
+                    startSlideshow();
+                } else {
+                    stopSlideshow();
+                }
+            });
+
+            thumbsPrevButton?.addEventListener('click', () => {
+                thumbsContainer?.scrollBy({ left: -(thumbsContainer.clientWidth || 240), behavior: 'smooth' });
+            });
+
+            thumbsNextButton?.addEventListener('click', () => {
+                thumbsContainer?.scrollBy({ left: thumbsContainer.clientWidth || 240, behavior: 'smooth' });
+            });
 
             lightbox.addEventListener('click', (event) => {
-                if (event.target === lightbox || event.target.hasAttribute?.('data-lightbox-stage')) {
+                if (!event.target.closest('[data-lightbox-panel]')) {
                     close();
                 }
             });
@@ -612,6 +725,11 @@
             });
 
             lightbox.addEventListener('touchstart', (event) => {
+                if (event.target.closest('[data-lightbox-thumbs]')) {
+                    touchStartX = null;
+                    return;
+                }
+
                 touchStartX = event.changedTouches[0]?.clientX ?? null;
             }, { passive: true });
 

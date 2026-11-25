@@ -120,6 +120,10 @@ return [
         'close' => 'Tutup galeri',
         'prev' => 'Foto sebelumnya',
         'next' => 'Foto berikutnya',
+        'play' => 'Putar otomatis',
+        'pause' => 'Hentikan putar otomatis',
+        'scroll_prev' => 'Geser daftar foto ke kiri',
+        'scroll_next' => 'Geser daftar foto ke kanan',
     ],
 
     'menu' => [
