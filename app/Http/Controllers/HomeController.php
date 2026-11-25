@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Gallery;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,10 @@ class HomeController extends Controller
             'blog-guru' => route('blog-guru.index'),
         ];
 
-        return view('pages.landing.index', compact('articles', 'categories', 'activeCategory', 'categoryRoutes'));
+        $galleryPhotos = Gallery::published()
+            ->ordered()
+            ->get();
+
+        return view('pages.landing.index', compact('articles', 'categories', 'activeCategory', 'categoryRoutes', 'galleryPhotos'));
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\BlogGuruController as AdminBlogGuruController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\PrestasiController as AdminPrestasiController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BeritaController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\Staff\ArticleController as StaffArticleController;
 use App\Http\Controllers\Staff\BeritaController as StaffBeritaController;
 use App\Http\Controllers\Staff\BlogGuruController as StaffBlogGuruController;
+use App\Http\Controllers\Staff\GalleryController as StaffGalleryController;
 use App\Http\Controllers\Staff\PrestasiController as StaffPrestasiController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +68,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::resource('blog-guru', AdminBlogGuruController::class)
             ->except('show')
             ->parameters(['blog-guru' => 'artikel']);
+
+        Route::resource('galeri', AdminGalleryController::class)->except('show');
     });
 
 Route::middleware(['auth', 'verified', 'role:staff'])
@@ -85,6 +89,8 @@ Route::middleware(['auth', 'verified', 'role:staff'])
         Route::resource('blog-guru', StaffBlogGuruController::class)
             ->except('show')
             ->parameters(['blog-guru' => 'artikel']);
+
+        Route::resource('galeri', StaffGalleryController::class)->except('show');
     });
 
 Route::view('profile', 'profile')

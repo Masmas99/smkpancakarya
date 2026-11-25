@@ -109,6 +109,14 @@ return [
         'published_on' => 'Terbit pada',
     ],
 
+    'gallery' => [
+        'label' => 'Galeri Sekolah',
+        'heading' => 'Album Galeri',
+        'intro' => 'Dokumentasi kegiatan, prestasi, dan keseharian siswa SMK Pancakarya Kota Tangerang.',
+        'empty' => 'Belum ada foto galeri yang dipublikasikan.',
+        'photo_alt' => 'Foto galeri SMK Pancakarya Kota Tangerang',
+    ],
+
     'menu' => [
         'open' => 'Buka menu navigasi',
         'close' => 'Tutup menu navigasi',

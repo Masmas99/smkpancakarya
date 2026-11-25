@@ -12,7 +12,7 @@
                     <p>{{ __("Anda masuk sebagai Staff.") }}</p>
 
                     <div class="grid gap-3 sm:grid-cols-2">
-                        @foreach (['berita' => 'Berita', 'prestasi' => 'Prestasi', 'artikel' => 'Artikel', 'blog-guru' => 'Blog Guru'] as $section => $label)
+                        @foreach (['berita' => 'Berita', 'prestasi' => 'Prestasi', 'artikel' => 'Artikel', 'blog-guru' => 'Blog Guru', 'galeri' => 'Galeri'] as $section => $label)
                             <a
                                 href="{{ route('staff.'.$section.'.index') }}"
                                 class="inline-flex items-center justify-center rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
