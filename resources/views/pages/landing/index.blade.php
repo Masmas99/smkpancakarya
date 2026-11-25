@@ -237,7 +237,7 @@
                                 <img
                                     src="{{ $photo->imageUrl() }}"
                                     alt="{{ $photo->title ?: __('site.gallery.photo_alt') }}"
-                                    class="block aspect-[4/3] w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03]"
+                                    class="block h-auto w-full transition duration-500 ease-out group-hover:scale-[1.03]"
                                     loading="lazy"
                                     decoding="async"
                                 >
