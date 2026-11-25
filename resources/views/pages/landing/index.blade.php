@@ -234,13 +234,23 @@
                     <div class="mt-10 columns-2 gap-2 sm:columns-3 sm:gap-3 lg:columns-4 xl:columns-5">
                         @foreach ($galleryPhotos as $photo)
                             <figure class="group relative mb-2 break-inside-avoid overflow-hidden rounded-lg bg-slate-200 shadow-sm sm:mb-3">
-                                <img
-                                    src="{{ $photo->imageUrl() }}"
-                                    alt="{{ $photo->title ?: __('site.gallery.photo_alt') }}"
-                                    class="block h-auto w-full transition duration-500 ease-out group-hover:scale-[1.03]"
-                                    loading="lazy"
-                                    decoding="async"
+                                <button
+                                    type="button"
+                                    class="block w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600"
+                                    data-gallery-open
+                                    data-gallery-src="{{ $photo->imageUrl() }}"
+                                    data-gallery-caption="{{ $photo->title }}"
+                                    data-gallery-alt="{{ $photo->title ?: __('site.gallery.photo_alt') }}"
+                                    aria-label="{{ __('site.gallery.open_photo') }}"
                                 >
+                                    <img
+                                        src="{{ $photo->imageUrl() }}"
+                                        alt="{{ $photo->title ?: __('site.gallery.photo_alt') }}"
+                                        class="block h-auto w-full transition duration-500 ease-out group-hover:scale-[1.03]"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                </button>
 
                                 @if (filled($photo->title))
                                     <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 via-slate-950/35 to-transparent p-2.5 pt-8 text-xs font-semibold leading-snug text-white opacity-100 sm:opacity-0 sm:transition sm:duration-300 sm:group-hover:opacity-100">
@@ -253,6 +263,76 @@
                 @endif
             </div>
         </section>
+
+        <div
+            id="gallery-lightbox"
+            class="fixed inset-0 z-[100] hidden bg-slate-950/95 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-label="{{ __('site.gallery.lightbox_label') }}"
+            tabindex="-1"
+        >
+            <div class="flex h-full w-full">
+                <div class="hidden w-24 shrink-0 overflow-y-auto border-r border-white/10 bg-slate-950/60 p-3 md:block lg:w-28">
+                    <div class="flex flex-col gap-2" data-lightbox-thumbs></div>
+                </div>
+
+                <div class="relative flex min-w-0 flex-1 flex-col">
+                    <div class="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">
+                            {{ __('site.gallery.heading') }}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                            data-lightbox-close
+                            aria-label="{{ __('site.gallery.close') }}"
+                        >
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="relative flex min-h-0 flex-1 items-center justify-center px-3 pb-3 sm:px-10" data-lightbox-stage>
+                        <button
+                            type="button"
+                            class="absolute left-1 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/60 text-white transition hover:bg-slate-900/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:left-4"
+                            data-lightbox-prev
+                            aria-label="{{ __('site.gallery.prev') }}"
+                        >
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
+                            </svg>
+                        </button>
+
+                        <img
+                            src=""
+                            alt=""
+                            class="block max-h-full max-w-full select-none object-contain shadow-2xl"
+                            data-lightbox-image
+                        >
+
+                        <button
+                            type="button"
+                            class="absolute right-1 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/60 text-white transition hover:bg-slate-900/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:right-4"
+                            data-lightbox-next
+                            aria-label="{{ __('site.gallery.next') }}"
+                        >
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-4 border-t border-white/10 px-4 py-3 sm:px-6">
+                        <p class="truncate text-sm font-semibold text-white" data-lightbox-caption></p>
+                        <span class="shrink-0 text-xs font-bold tracking-[0.2em] text-white/70" data-lightbox-counter></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -407,6 +487,148 @@
 
                 loadCategory(link);
             });
+        })();
+
+        (() => {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const triggers = Array.from(document.querySelectorAll('[data-gallery-open]'));
+
+            if (!lightbox || triggers.length === 0) {
+                return;
+            }
+
+            const image = lightbox.querySelector('[data-lightbox-image]');
+            const caption = lightbox.querySelector('[data-lightbox-caption]');
+            const counter = lightbox.querySelector('[data-lightbox-counter]');
+            const thumbsContainer = lightbox.querySelector('[data-lightbox-thumbs]');
+            const closeButton = lightbox.querySelector('[data-lightbox-close]');
+            const prevButton = lightbox.querySelector('[data-lightbox-prev]');
+            const nextButton = lightbox.querySelector('[data-lightbox-next]');
+
+            const thumbClasses = {
+                base: 'block w-full overflow-hidden rounded-md border-2 opacity-60 transition hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70',
+                active: 'border-white opacity-100',
+                idle: 'border-transparent',
+            };
+
+            const thumbs = triggers.map((trigger, index) => {
+                const thumb = document.createElement('button');
+                thumb.type = 'button';
+                thumb.className = `${thumbClasses.base} ${thumbClasses.idle}`;
+                thumb.setAttribute('aria-label', `Lihat foto ${index + 1}`);
+
+                const thumbImage = document.createElement('img');
+                thumbImage.src = trigger.dataset.gallerySrc || '';
+                thumbImage.alt = '';
+                thumbImage.loading = 'lazy';
+                thumbImage.className = 'block h-auto w-full';
+
+                thumb.appendChild(thumbImage);
+                thumb.addEventListener('click', () => show(index));
+                thumbsContainer?.appendChild(thumb);
+
+                return thumb;
+            });
+
+            let currentIndex = 0;
+            let lastFocused = null;
+            let touchStartX = null;
+
+            const pad = (value) => String(value).padStart(2, '0');
+
+            const show = (index) => {
+                currentIndex = (index + triggers.length) % triggers.length;
+
+                const trigger = triggers[currentIndex];
+                const source = trigger.dataset.gallerySrc || '';
+                const title = (trigger.dataset.galleryCaption || '').trim();
+
+                image.src = source;
+                image.alt = (trigger.dataset.galleryAlt || '').trim();
+                caption.textContent = title || `Foto ${currentIndex + 1}`;
+                counter.textContent = `${pad(currentIndex + 1)} / ${pad(triggers.length)}`;
+
+                thumbs.forEach((thumb, thumbIndex) => {
+                    const active = thumbIndex === currentIndex;
+                    thumb.className = `${thumbClasses.base} ${active ? thumbClasses.active : thumbClasses.idle}`;
+
+                    if (active) {
+                        thumb.setAttribute('aria-current', 'true');
+                        thumb.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        thumb.removeAttribute('aria-current');
+                    }
+                });
+            };
+
+            const open = (index, trigger) => {
+                lastFocused = trigger || null;
+                show(index);
+                lightbox.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                lightbox.focus({ preventScroll: true });
+            };
+
+            const close = () => {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = '';
+                image.removeAttribute('src');
+
+                if (lastFocused && typeof lastFocused.focus === 'function') {
+                    lastFocused.focus({ preventScroll: true });
+                }
+            };
+
+            const isOpen = () => !lightbox.classList.contains('hidden');
+
+            triggers.forEach((trigger, index) => {
+                trigger.addEventListener('click', () => open(index, trigger));
+            });
+
+            closeButton?.addEventListener('click', close);
+            prevButton?.addEventListener('click', () => show(currentIndex - 1));
+            nextButton?.addEventListener('click', () => show(currentIndex + 1));
+
+            lightbox.addEventListener('click', (event) => {
+                if (event.target === lightbox || event.target.hasAttribute?.('data-lightbox-stage')) {
+                    close();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (!isOpen()) {
+                    return;
+                }
+
+                if (event.key === 'Escape') {
+                    close();
+                } else if (event.key === 'ArrowLeft') {
+                    event.preventDefault();
+                    show(currentIndex - 1);
+                } else if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    show(currentIndex + 1);
+                }
+            });
+
+            lightbox.addEventListener('touchstart', (event) => {
+                touchStartX = event.changedTouches[0]?.clientX ?? null;
+            }, { passive: true });
+
+            lightbox.addEventListener('touchend', (event) => {
+                if (touchStartX === null) {
+                    return;
+                }
+
+                const delta = (event.changedTouches[0]?.clientX ?? touchStartX) - touchStartX;
+                touchStartX = null;
+
+                if (Math.abs(delta) < 40) {
+                    return;
+                }
+
+                show(currentIndex + (delta < 0 ? 1 : -1));
+            }, { passive: true });
         })();
     </script>
 </x-layouts.public>
