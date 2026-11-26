@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ArticleTest extends TestCase
@@ -419,7 +420,10 @@ class ArticleTest extends TestCase
 
     public function test_landing_page_shows_category_tabs(): void
     {
-        $this->get('/')
+        $response = $this->get('/');
+        $content = $response->getContent();
+
+        $response
             ->assertOk()
             ->assertSee('Artikel dan Berita Terbaru')
             ->assertSee('Berita')
@@ -430,14 +434,18 @@ class ArticleTest extends TestCase
             ->assertSee('data-article-tab', false)
             ->assertSee('data-category="berita"', false)
             ->assertSee('event.preventDefault()', false)
-            // Konten lama tidak boleh diredupkan hingga tampak seperti area putih.
-            ->assertDontSee('opacity-60', false)
-            ->assertDontSee('transition-opacity', false)
             ->assertSee("searchParams.delete('category')", false)
             ->assertDontSee('?category=berita#artikel', false)
             ->assertDontSee('?category=prestasi#artikel', false)
             ->assertDontSee('?category=artikel#artikel', false)
             ->assertDontSee('?category=blog-guru#artikel', false);
+
+        // Konten lama tidak boleh diredupkan hingga tampak seperti area putih.
+        // Batasi pemeriksaan pada bagian artikel agar kelas opacity milik lightbox tidak ikut terperiksa.
+        $articleSection = Str::between($content, '<section id="artikel"', '</section>');
+
+        $this->assertStringNotContainsString('opacity-60', $articleSection);
+        $this->assertStringNotContainsString('transition-opacity', $articleSection);
     }
 
     public function test_landing_page_places_prestasi_tab_first(): void

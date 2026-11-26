@@ -159,7 +159,7 @@
                 </h2>
 
                 <nav
-                    class="mx-auto mt-8 grid max-w-5xl grid-cols-2 gap-1 rounded-3xl bg-blue-950 p-1.5 sm:grid-cols-4 sm:rounded-full"
+                    class="mx-auto mt-8 grid max-w-xl grid-cols-2 gap-1.5 rounded-3xl bg-blue-950 p-1.5"
                     aria-label="{{ __('site.articles.filter_label') }}"
                 >
                     @foreach ($categories as $key => $label)
