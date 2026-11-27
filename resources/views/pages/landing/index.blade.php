@@ -266,40 +266,130 @@
 
         <div
             id="gallery-lightbox"
-            class="fixed inset-0 z-[100] hidden bg-slate-950/95 backdrop-blur-sm"
+            class="fixed inset-0 z-[100] hidden bg-slate-950/60 backdrop-blur-sm"
             role="dialog"
             aria-modal="true"
             aria-label="{{ __('site.gallery.lightbox_label') }}"
             tabindex="-1"
         >
-            <div class="flex h-full flex-col" data-lightbox-panel>
-                <div class="flex shrink-0 items-center justify-between gap-3 px-3 py-3 sm:px-6">
-                    <div class="min-w-0">
-                        <p class="truncate text-sm font-semibold text-white sm:text-base" data-lightbox-caption></p>
-                        <p class="mt-0.5 text-xs font-semibold tracking-[0.2em] text-white/50" data-lightbox-counter aria-live="polite"></p>
-                    </div>
+            <div class="flex h-full w-full items-center justify-center p-3 sm:p-6" data-lightbox-backdrop>
+                <div class="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl" data-lightbox-panel>
+                    <div class="relative flex min-h-[200px] items-center justify-center bg-slate-50" data-lightbox-stage>
+                        <img
+                            src=""
+                            alt=""
+                            class="block max-h-[58vh] w-auto max-w-full select-none object-contain sm:max-h-[64vh]"
+                            data-lightbox-image
+                            draggable="false"
+                        >
 
-                    <div class="flex shrink-0 items-center gap-2">
                         <button
                             type="button"
-                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur transition hover:bg-white/20 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                            class="absolute right-2 top-2 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                            data-lightbox-close
+                            aria-label="{{ __('site.gallery.close') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="absolute left-2 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-md transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:left-3"
+                            data-lightbox-prev
+                            aria-label="{{ __('site.gallery.prev') }}"
+                        >
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
+                            </svg>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="absolute right-2 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-md transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:right-3"
+                            data-lightbox-next
+                            aria-label="{{ __('site.gallery.next') }}"
+                        >
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-1 border-b border-slate-200 px-2 py-2 sm:gap-2 sm:px-3">
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                            data-lightbox-thumbs-prev
+                            aria-label="{{ __('site.gallery.scroll_prev') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
+                            </svg>
+                        </button>
+
+                        <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto px-0.5 py-0.5" data-lightbox-thumbs></div>
+
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                            data-lightbox-thumbs-next
+                            aria-label="{{ __('site.gallery.scroll_next') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 px-2 py-2.5 sm:px-3">
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
                             data-lightbox-play
                             data-label-play="{{ __('site.gallery.play') }}"
                             data-label-pause="{{ __('site.gallery.pause') }}"
                             aria-label="{{ __('site.gallery.play') }}"
                             aria-pressed="false"
                         >
-                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-lightbox-play-icon>
+                            <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-lightbox-play-icon>
                                 <path d="M8 5.14v13.72L19 12z" />
                             </svg>
-                            <svg class="hidden h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-lightbox-pause-icon>
+                            <svg class="hidden h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-lightbox-pause-icon>
                                 <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
                             </svg>
                         </button>
 
                         <button
                             type="button"
-                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                            data-lightbox-prev
+                            aria-label="{{ __('site.gallery.prev') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
+                            </svg>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                            data-lightbox-next
+                            aria-label="{{ __('site.gallery.next') }}"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
+                        <span class="ml-1 shrink-0 text-sm font-semibold text-slate-700" data-lightbox-counter aria-live="polite"></span>
+
+                        <p class="min-w-0 flex-1 truncate text-xs text-slate-500" data-lightbox-caption></p>
+
+                        <button
+                            type="button"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
                             data-lightbox-close
                             aria-label="{{ __('site.gallery.close') }}"
                         >
@@ -308,64 +398,6 @@
                             </svg>
                         </button>
                     </div>
-                </div>
-
-                <div class="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden px-2 sm:px-16" data-lightbox-stage>
-                    <button
-                        type="button"
-                        class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:left-4"
-                        data-lightbox-prev
-                        aria-label="{{ __('site.gallery.prev') }}"
-                    >
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
-                        </svg>
-                    </button>
-
-                    <img
-                        src=""
-                        alt=""
-                        class="block max-h-full max-w-full select-none rounded-lg object-contain shadow-2xl"
-                        data-lightbox-image
-                        draggable="false"
-                    >
-
-                    <button
-                        type="button"
-                        class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:right-4"
-                        data-lightbox-next
-                        aria-label="{{ __('site.gallery.next') }}"
-                    >
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="flex shrink-0 items-center gap-1.5 px-2 py-3 sm:gap-2 sm:px-6">
-                    <button
-                        type="button"
-                        class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                        data-lightbox-thumbs-prev
-                        aria-label="{{ __('site.gallery.scroll_prev') }}"
-                    >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
-                        </svg>
-                    </button>
-
-                    <div class="flex min-w-0 flex-1 gap-1.5 overflow-x-auto px-0.5 py-0.5 sm:gap-2" data-lightbox-thumbs></div>
-
-                    <button
-                        type="button"
-                        class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                        data-lightbox-thumbs-next
-                        aria-label="{{ __('site.gallery.scroll_next') }}"
-                    >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>
@@ -539,8 +571,9 @@
             const thumbsContainer = lightbox.querySelector('[data-lightbox-thumbs]');
             const thumbsPrevButton = lightbox.querySelector('[data-lightbox-thumbs-prev]');
             const thumbsNextButton = lightbox.querySelector('[data-lightbox-thumbs-next]');
-            const closeButton = lightbox.querySelector('[data-lightbox-close]');
+            const closeButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-close]'));
             const stage = lightbox.querySelector('[data-lightbox-stage]');
+            const backdrop = lightbox.querySelector('[data-lightbox-backdrop]');
             const prevButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-prev]'));
             const nextButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-next]'));
             const playButton = lightbox.querySelector('[data-lightbox-play]');
@@ -548,8 +581,8 @@
             const pauseIcon = lightbox.querySelector('[data-lightbox-pause-icon]');
 
             const thumbClasses = {
-                base: 'block h-14 w-14 shrink-0 overflow-hidden rounded-md border-2 opacity-50 transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white sm:h-16 sm:w-16',
-                active: 'border-white opacity-100',
+                base: 'block h-12 w-12 shrink-0 overflow-hidden rounded-md border-2 opacity-60 transition hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:h-14 sm:w-14',
+                active: 'border-slate-900 opacity-100',
                 idle: 'border-transparent',
             };
 
@@ -608,7 +641,7 @@
                 image.src = source;
                 image.alt = (trigger.dataset.galleryAlt || '').trim();
                 caption.textContent = title || `Foto ${currentIndex + 1}`;
-                counter.textContent = `${currentIndex + 1} / ${triggers.length}`;
+                counter.textContent = `${currentIndex + 1}/${triggers.length}`;
 
                 thumbs.forEach((thumb, thumbIndex) => {
                     const active = thumbIndex === currentIndex;
@@ -655,7 +688,7 @@
                 trigger.addEventListener('click', () => open(index, trigger));
             });
 
-            closeButton?.addEventListener('click', close);
+            closeButtons.forEach((button) => button.addEventListener('click', close));
             prevButtons.forEach((button) => button.addEventListener('click', () => show(currentIndex - 1)));
             nextButtons.forEach((button) => button.addEventListener('click', () => show(currentIndex + 1)));
 
@@ -677,6 +710,12 @@
 
             stage?.addEventListener('click', (event) => {
                 if (event.target === stage) {
+                    close();
+                }
+            });
+
+            backdrop?.addEventListener('click', (event) => {
+                if (event.target === backdrop) {
                     close();
                 }
             });
