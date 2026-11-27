@@ -231,12 +231,12 @@
                         </p>
                     </div>
                 @else
-                    <div class="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <div class="mt-10 columns-2 gap-2 sm:columns-3 sm:gap-3 lg:columns-4 xl:columns-5">
                         @foreach ($galleryPhotos as $photo)
-                            <figure class="group relative overflow-hidden rounded-lg bg-slate-200 shadow-sm">
+                            <figure class="group relative mb-2 break-inside-avoid overflow-hidden rounded-lg bg-slate-200 shadow-sm sm:mb-3">
                                 <button
                                     type="button"
-                                    class="block aspect-square w-full cursor-zoom-in overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600"
+                                    class="block w-full cursor-zoom-in overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600"
                                     data-gallery-open
                                     data-gallery-src="{{ $photo->imageUrl() }}"
                                     data-gallery-caption="{{ $photo->title }}"
@@ -246,7 +246,7 @@
                                     <img
                                         src="{{ $photo->imageUrl() }}"
                                         alt="{{ $photo->title ?: __('site.gallery.photo_alt') }}"
-                                        class="block h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105"
+                                        class="block h-auto w-full transition duration-500 ease-out group-hover:scale-105"
                                         loading="lazy"
                                         decoding="async"
                                     >
