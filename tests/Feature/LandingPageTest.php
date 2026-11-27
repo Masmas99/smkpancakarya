@@ -119,8 +119,9 @@ class LandingPageTest extends TestCase
 
     public function test_landing_page_shows_extracurricular_section_below_gallery(): void
     {
-        $this->get('/')
-            ->assertOk()
+        $response = $this->get('/');
+
+        $response->assertOk()
             ->assertSee('Ekstra Kurikuler')
             ->assertSee('Team Futsal Sekolah')
             ->assertSee('Devackta Morgama Jurnalistik')
@@ -128,6 +129,17 @@ class LandingPageTest extends TestCase
             ->assertSee('Paskibra SMK Pancakarya')
             ->assertSee('Apresiasi Seni SMK Pancakarya')
             ->assertSee('Ikatan Pecinta Alam SMK Pancakarya Tangerang');
+
+        foreach ([
+            'images/ekskul/dm-jurnalistik.jpeg',
+            'images/ekskul/rohis.jpg',
+            'images/ekskul/paskibra.jpg',
+            'images/ekskul/apresiasi-seni.jpg',
+            'images/ekskul/ikpa.jpg',
+        ] as $logo) {
+            $this->assertFileExists(public_path($logo));
+            $response->assertSee($logo, false);
+        }
 
         $home = file_get_contents(resource_path('views/pages/landing/index.blade.php'));
         $galleryPosition = strpos($home, '<section id="galeri"');

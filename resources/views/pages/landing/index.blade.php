@@ -262,19 +262,13 @@
 
         <section id="ekstrakurikuler" class="border-t border-slate-200 bg-white py-16 sm:py-20" aria-labelledby="extracurricular-title">
             @php
-                $extracurricularIcons = [
-                    // Bola futsal
-                    '<circle cx="12" cy="12" r="9" /><path d="m12 7.6 3.2 2.3-1.2 3.8h-4L8.8 9.9 12 7.6Z" /><path d="M12 3v4.6M4.3 9.6l4.5.3M6.3 19.1l3.3-4.4M17.7 19.1l-3.3-4.4M19.7 9.6l-4.5.3" />',
-                    // Jurnalistik
-                    '<path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6h4.75" />',
-                    // Rohis
-                    '<path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />',
-                    // Paskibra
-                    '<path d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />',
-                    // Apresiasi seni
-                    '<path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />',
-                    // Pecinta alam
-                    '<path d="m3 19 6-9 4 6 2-3 6 6H3Z" /><circle cx="17" cy="6" r="2" />',
+                $extracurricularLogos = [
+                    null, // Team Futsal belum memiliki logo di situs lama
+                    'images/ekskul/dm-jurnalistik.jpeg',
+                    'images/ekskul/rohis.jpg',
+                    'images/ekskul/paskibra.jpg',
+                    'images/ekskul/apresiasi-seni.jpg',
+                    'images/ekskul/ikpa.jpg',
                 ];
             @endphp
 
@@ -291,21 +285,31 @@
 
                 <ul class="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                     @foreach (__('site.extracurricular.items') as $index => $item)
-                        <li class="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 transition duration-200 hover:border-blue-200 hover:bg-white hover:shadow-lg hover:shadow-slate-900/5 sm:p-6">
-                            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-950 text-white transition-colors duration-200 group-hover:bg-blue-800 sm:h-14 sm:w-14" aria-hidden="true">
-                                <svg class="h-6 w-6 sm:h-7 sm:w-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" focusable="false">
-                                    {!! $extracurricularIcons[$index] ?? '' !!}
-                                </svg>
+                        <li class="group flex flex-col items-center rounded-2xl border border-slate-200 bg-slate-50 p-5 text-center transition duration-200 hover:border-blue-200 hover:bg-white hover:shadow-lg hover:shadow-slate-900/5 sm:p-6">
+                            <span class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white p-2 shadow-sm ring-1 ring-slate-200 transition duration-200 group-hover:ring-blue-200 sm:h-24 sm:w-24">
+                                @if (! empty($extracurricularLogos[$index]))
+                                    <img
+                                        src="{{ asset($extracurricularLogos[$index]) }}"
+                                        alt="Logo {{ $item['name'] }}"
+                                        class="h-full w-full object-contain"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                @else
+                                    <svg class="h-12 w-12 text-blue-900 sm:h-14 sm:w-14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="9" />
+                                        <path d="m12 7.6 3.2 2.3-1.2 3.8h-4L8.8 9.9 12 7.6Z" />
+                                        <path d="M12 3v4.6M4.3 9.6l4.5.3M6.3 19.1l3.3-4.4M17.7 19.1l-3.3-4.4M19.7 9.6l-4.5.3" />
+                                    </svg>
+                                @endif
                             </span>
 
-                            <div class="min-w-0">
-                                <h3 class="text-balance text-base font-bold leading-snug text-slate-900 sm:text-lg">
-                                    {{ $item['name'] }}
-                                </h3>
-                                <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
-                                    {{ $item['description'] }}
-                                </p>
-                            </div>
+                            <h3 class="mt-4 text-balance text-base font-bold leading-snug text-slate-900 sm:text-lg">
+                                {{ $item['name'] }}
+                            </h3>
+                            <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
+                                {{ $item['description'] }}
+                            </p>
                         </li>
                     @endforeach
                 </ul>
