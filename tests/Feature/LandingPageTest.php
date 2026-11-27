@@ -151,6 +151,34 @@ class LandingPageTest extends TestCase
         $this->assertGreaterThan($galleryPosition, $extracurricularPosition);
     }
 
+    public function test_landing_page_shows_alumni_testimonials_below_extracurricular(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk()
+            ->assertSee('Kesan Alumni')
+            ->assertSee('Rizky Ramadhan')
+            ->assertSee('Alumni 2019')
+            ->assertSee('Teknik Komputer dan Jaringan')
+            ->assertSee('Siti Nurhaliza')
+            ->assertSee('Alumni 2020')
+            ->assertSee('Bisnis Digital Pemasaran')
+            ->assertSee('Dwi Lestari')
+            ->assertSee('Alumni 2021')
+            ->assertSee('Akuntansi Keuangan Lembaga');
+
+        $home = file_get_contents(resource_path('views/pages/landing/index.blade.php'));
+        $extracurricularPosition = strpos($home, '<section id="ekstrakurikuler"');
+        $alumniPosition = strpos($home, '<section id="kesan-alumni"');
+        $lightboxPosition = strpos($home, 'id="gallery-lightbox"');
+
+        $this->assertNotFalse($extracurricularPosition);
+        $this->assertNotFalse($alumniPosition);
+        $this->assertNotFalse($lightboxPosition);
+        $this->assertGreaterThan($extracurricularPosition, $alumniPosition);
+        $this->assertGreaterThan($alumniPosition, $lightboxPosition);
+    }
+
     public function test_navigation_links_point_to_menu_pages(): void
     {
         $response = $this->get('/');

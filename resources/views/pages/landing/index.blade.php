@@ -308,6 +308,61 @@
             </div>
         </section>
 
+        <section id="kesan-alumni" class="border-t border-slate-200 bg-slate-50 py-16 sm:py-20" aria-labelledby="alumni-title">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-3xl text-center">
+                    <h2 id="alumni-title" class="text-3xl font-bold uppercase tracking-tight text-blue-950 sm:text-4xl lg:text-5xl">
+                        {{ __('site.alumni.heading') }}
+                    </h2>
+
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+                        {{ __('site.alumni.intro') }}
+                    </p>
+                </div>
+
+                <ul class="mt-10 grid gap-4 sm:mt-12 sm:gap-6 lg:grid-cols-3">
+                    @foreach (__('site.alumni.items') as $item)
+                        @php
+                            $initials = collect(explode(' ', $item['name']))
+                                ->filter()
+                                ->take(2)
+                                ->map(fn (string $word) => mb_strtoupper(mb_substr($word, 0, 1)))
+                                ->implode('');
+                        @endphp
+
+                        <li class="h-full">
+                            <figure class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:border-blue-200 hover:shadow-lg hover:shadow-slate-900/5 sm:p-7">
+                                <svg class="h-8 w-8 text-blue-200" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M7.2 5.1c-2.9 1.5-4.7 4.3-4.7 7.6 0 3.3 2 5.6 4.8 5.6 2.3 0 3.9-1.5 3.9-3.6 0-2-1.4-3.4-3.3-3.4-.4 0-.8 0-1.1.2.4-1.7 1.7-3.2 3.4-4.2L7.2 5.1Zm9.7 0c-2.9 1.5-4.7 4.3-4.7 7.6 0 3.3 2 5.6 4.8 5.6 2.3 0 3.9-1.5 3.9-3.6 0-2-1.4-3.4-3.3-3.4-.4 0-.8 0-1.1.2.4-1.7 1.7-3.2 3.4-4.2l-3-2.2Z" />
+                                </svg>
+
+                                <blockquote class="mt-4 flex-1">
+                                    <p class="text-sm leading-relaxed text-slate-700 sm:text-base">
+                                        {{ $item['quote'] }}
+                                    </p>
+                                </blockquote>
+
+                                <figcaption class="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
+                                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-950 text-sm font-bold text-white" aria-hidden="true">
+                                        {{ $initials }}
+                                    </span>
+
+                                    <div class="min-w-0">
+                                        <p class="truncate text-sm font-bold text-slate-900">
+                                            {{ $item['name'] }}
+                                        </p>
+                                        <p class="text-xs leading-relaxed text-slate-500">
+                                            {{ $item['year'] }} &middot; {{ $item['major'] }}
+                                        </p>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </section>
+
         <div
             id="gallery-lightbox"
             class="fixed inset-0 z-[100] hidden bg-slate-950/60 backdrop-blur-sm"

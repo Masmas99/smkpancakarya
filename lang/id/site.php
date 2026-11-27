@@ -156,6 +156,31 @@ return [
         ],
     ],
 
+    'alumni' => [
+        'heading' => 'Kesan Alumni',
+        'intro' => 'Cerita dan kesan para alumni tentang pengalaman belajar di SMK Pancakarya Kota Tangerang.',
+        'items' => [
+            [
+                'quote' => 'Praktik di lab jaringan membuat saya lebih siap masuk dunia kerja. Guru-guru di sini sabar membimbing sampai siswanya benar-benar paham.',
+                'name' => 'Rizky Ramadhan',
+                'year' => 'Alumni 2019',
+                'major' => 'Teknik Komputer dan Jaringan',
+            ],
+            [
+                'quote' => 'Ilmu pemasaran digital yang saya pelajari sangat terasa manfaatnya. Setelah lulus saya bisa mengembangkan usaha keluarga secara online.',
+                'name' => 'Siti Nurhaliza',
+                'year' => 'Alumni 2020',
+                'major' => 'Bisnis Digital Pemasaran',
+            ],
+            [
+                'quote' => 'Selain akademik, kegiatan ekstrakurikuler membentuk kedisiplinan dan rasa tanggung jawab saya. Bekal itu yang paling terasa saat kuliah dan bekerja.',
+                'name' => 'Dwi Lestari',
+                'year' => 'Alumni 2021',
+                'major' => 'Akuntansi Keuangan Lembaga',
+            ],
+        ],
+    ],
+
     'menu' => [
         'open' => 'Buka menu navigasi',
         'close' => 'Tutup menu navigasi',
