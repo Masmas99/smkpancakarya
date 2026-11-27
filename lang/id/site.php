@@ -110,7 +110,6 @@ return [
     ],
 
     'gallery' => [
-        'label' => 'Galeri Sekolah',
         'heading' => 'Album Galeri',
         'intro' => 'Dokumentasi kegiatan, prestasi, dan keseharian siswa SMK Pancakarya Kota Tangerang.',
         'empty' => 'Belum ada foto galeri yang dipublikasikan.',

@@ -211,11 +211,7 @@
         <section id="galeri" class="border-t border-slate-200 bg-slate-50 py-16 sm:py-20" aria-labelledby="gallery-title">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="mx-auto max-w-3xl text-center">
-                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-blue-700">
-                        {{ __('site.gallery.label') }}
-                    </p>
-
-                    <h2 id="gallery-title" class="mt-2 text-3xl font-bold uppercase tracking-tight text-blue-950 sm:text-4xl lg:text-5xl">
+                    <h2 id="gallery-title" class="text-3xl font-bold uppercase tracking-tight text-blue-950 sm:text-4xl lg:text-5xl">
                         {{ __('site.gallery.heading') }}
                     </h2>
 
