@@ -12,7 +12,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Playfair Display"', ...defaultTheme.fontFamily.serif],
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },
