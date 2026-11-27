@@ -8,7 +8,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts (self-hosted) -->
-        <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/figtree-latin-400.woff2') }}" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/playfair-display-latin-var.woff2') }}" crossorigin>
 
         <!-- Scripts -->
         @vite('resources/css/app.css')
