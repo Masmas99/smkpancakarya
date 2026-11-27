@@ -24,7 +24,6 @@ class GallerySeederTest extends TestCase
         $first = Gallery::ordered()->first();
 
         $this->assertSame('Praktik Kerja Lapangan Kelas XII Jurusan Teknologi Komputer dan Jaringan 2024', $first->title);
-        $this->assertSame(1, $first->sort_order);
         $this->assertNotNull($first->imageUrl());
         Storage::disk('public')->assertExists($first->image);
     }

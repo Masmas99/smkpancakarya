@@ -41,19 +41,25 @@ class GalleryTest extends TestCase
             ->assertDontSee('Foto Belum Tayang');
     }
 
-    public function test_landing_page_orders_gallery_photos_by_sort_order(): void
+    public function test_landing_page_orders_gallery_photos_by_newest_first(): void
     {
-        Gallery::factory()->create(['title' => 'Foto Urutan Kedua', 'sort_order' => 20]);
-        Gallery::factory()->create(['title' => 'Foto Urutan Pertama', 'sort_order' => 10]);
+        Gallery::factory()->create([
+            'title' => 'Foto Lebih Lama',
+            'created_at' => now()->subDay(),
+        ]);
+        Gallery::factory()->create([
+            'title' => 'Foto Terbaru',
+            'created_at' => now(),
+        ]);
 
         $content = $this->get('/')->assertOk()->getContent();
 
-        $first = strpos($content, 'Foto Urutan Pertama');
-        $second = strpos($content, 'Foto Urutan Kedua');
+        $newest = strpos($content, 'Foto Terbaru');
+        $older = strpos($content, 'Foto Lebih Lama');
 
-        $this->assertNotFalse($first);
-        $this->assertNotFalse($second);
-        $this->assertTrue($first < $second);
+        $this->assertNotFalse($newest);
+        $this->assertNotFalse($older);
+        $this->assertTrue($newest < $older);
     }
 
     public function test_guests_are_redirected_to_login_from_gallery_management(): void
@@ -100,14 +106,12 @@ class GalleryTest extends TestCase
         $this->actingAs($staff)->post('/staff/galeri', [
             'title' => 'Kegiatan Peringatan Hari Guru',
             'image' => UploadedFile::fake()->image('hari-guru.jpg', 1200, 800),
-            'sort_order' => 3,
             'is_published' => '1',
         ])->assertRedirect(route('staff.galeri.index'));
 
         $photo = Gallery::firstOrFail();
 
         $this->assertSame('Kegiatan Peringatan Hari Guru', $photo->title);
-        $this->assertSame(3, $photo->sort_order);
         $this->assertTrue($photo->is_published);
         $this->assertSame($staff->id, $photo->user_id);
         Storage::disk('public')->assertExists($photo->image);
@@ -152,7 +156,6 @@ class GalleryTest extends TestCase
         $photo = Gallery::firstOrFail();
 
         $this->assertNull($photo->title);
-        $this->assertSame(0, $photo->sort_order);
         $this->assertFalse($photo->is_published);
     }
 
@@ -164,21 +167,18 @@ class GalleryTest extends TestCase
         $photo = Gallery::factory()->create([
             'title' => 'Judul Lama',
             'image' => 'galeri/lama.jpg',
-            'sort_order' => 1,
         ]);
 
         Storage::disk('public')->put('galeri/lama.jpg', 'lama');
 
         $this->actingAs($staff)->put(route('staff.galeri.update', $photo), [
             'title' => 'Judul Baru',
-            'sort_order' => 5,
             'image' => UploadedFile::fake()->image('baru.png'),
         ])->assertRedirect(route('staff.galeri.index'));
 
         $photo->refresh();
 
         $this->assertSame('Judul Baru', $photo->title);
-        $this->assertSame(5, $photo->sort_order);
         $this->assertFalse($photo->is_published);
         $this->assertNotSame('galeri/lama.jpg', $photo->image);
         Storage::disk('public')->assertMissing('galeri/lama.jpg');

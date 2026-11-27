@@ -90,7 +90,7 @@
                                     {{ $photo->title ?: 'Tanpa judul' }}
                                 </p>
                                 <p class="text-xs text-gray-500">
-                                    Urutan {{ $photo->sort_order }} &middot; {{ $photo->author?->name ?? '-' }}
+                                    {{ $photo->author?->name ?? '-' }}
                                 </p>
 
                                 <div class="flex items-center justify-end gap-3 pt-3 text-sm">

@@ -26,7 +26,6 @@ class Gallery extends Model
         'user_id',
         'title',
         'image',
-        'sort_order',
         'is_published',
     ];
 
@@ -38,7 +37,6 @@ class Gallery extends Model
     protected function casts(): array
     {
         return [
-            'sort_order' => 'integer',
             'is_published' => 'boolean',
         ];
     }
@@ -65,7 +63,7 @@ class Gallery extends Model
     }
 
     /**
-     * Urutkan foto sesuai urutan tampil pada galeri.
+     * Urutkan foto secara otomatis, foto terbaru tampil lebih dahulu.
      *
      * @param  Builder<Gallery>  $query
      * @return Builder<Gallery>
@@ -73,7 +71,6 @@ class Gallery extends Model
     public function scopeOrdered(Builder $query): Builder
     {
         return $query
-            ->orderBy('sort_order')
             ->orderByDesc('created_at')
             ->orderByDesc('id');
     }

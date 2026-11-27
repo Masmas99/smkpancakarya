@@ -27,7 +27,6 @@ class GalleryRequest extends FormRequest
                 'mimes:jpg,jpeg,png,webp',
                 'max:8192',
             ],
-            'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
             'is_published' => ['nullable', 'boolean'],
         ];
     }
@@ -40,7 +39,6 @@ class GalleryRequest extends FormRequest
         return [
             'title' => 'judul foto',
             'image' => 'foto',
-            'sort_order' => 'urutan tampil',
             'is_published' => 'status tampil',
         ];
     }
@@ -56,9 +54,6 @@ class GalleryRequest extends FormRequest
             'image.image' => 'Berkas yang diunggah harus berupa gambar.',
             'image.mimes' => 'Foto harus berformat JPG, PNG, atau WEBP.',
             'image.max' => 'Ukuran foto maksimal 8 MB.',
-            'sort_order.integer' => 'Urutan tampil harus berupa angka.',
-            'sort_order.min' => 'Urutan tampil minimal 0.',
-            'sort_order.max' => 'Urutan tampil maksimal 9999.',
             'is_published.boolean' => 'Status tampil tidak valid.',
         ];
     }

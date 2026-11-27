@@ -41,8 +41,10 @@ class GallerySeeder extends Seeder
                 [
                     'user_id' => $author?->id,
                     'title' => $photo['title'],
-                    'sort_order' => $index + 1,
                     'is_published' => true,
+                    // Foto teratas pada daftar dianggap paling baru agar urutan
+                    // otomatis (created_at terbaru lebih dahulu) tetap sesuai.
+                    'created_at' => now()->subMinutes($index),
                 ],
             );
         }

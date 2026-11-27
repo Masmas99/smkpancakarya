@@ -24,7 +24,6 @@ class GalleryFactory extends Factory
             'user_id' => User::factory(),
             'title' => rtrim(fake()->sentence(4), '.'),
             'image' => 'galeri/'.fake()->uuid().'.jpg',
-            'sort_order' => 0,
             'is_published' => true,
         ];
     }

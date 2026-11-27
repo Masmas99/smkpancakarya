@@ -68,7 +68,6 @@ abstract class GalleryManagementController extends Controller
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
         $data['image'] = $request->file('image')->store('galeri', 'public');
-        $data['sort_order'] = $data['sort_order'] ?? 0;
         $data['is_published'] = $request->boolean('is_published');
 
         Gallery::create($data);
@@ -98,7 +97,6 @@ abstract class GalleryManagementController extends Controller
 
         $data = $request->validated();
         unset($data['image']);
-        $data['sort_order'] = $data['sort_order'] ?? 0;
         $data['is_published'] = $request->boolean('is_published');
 
         if ($request->hasFile('image')) {

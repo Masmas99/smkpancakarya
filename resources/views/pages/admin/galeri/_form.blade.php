@@ -73,20 +73,8 @@
         <div class="space-y-6">
             <div class="space-y-5 bg-white p-6 shadow-sm sm:rounded-lg">
                 <div>
-                    <label for="sort_order" class="block text-sm font-medium text-gray-700">Urutan Tampil</label>
-                    <input
-                        id="sort_order"
-                        name="sort_order"
-                        type="number"
-                        min="0"
-                        max="9999"
-                        value="{{ old('sort_order', $galeri->sort_order ?? 0) }}"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                    <p class="mt-1 text-xs text-gray-500">Angka lebih kecil tampil lebih dahulu.</p>
-                    @error('sort_order')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <p class="text-sm font-medium text-gray-700">Urutan tampil otomatis</p>
+                    <p class="mt-1 text-xs text-gray-500">Foto yang paling baru diunggah tampil lebih dahulu.</p>
                 </div>
 
                 <div>
