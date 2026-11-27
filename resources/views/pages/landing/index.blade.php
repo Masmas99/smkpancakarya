@@ -273,8 +273,8 @@
             tabindex="-1"
         >
             <div class="flex h-full w-full items-center justify-center p-3 sm:p-6" data-lightbox-backdrop>
-                <div class="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl" data-lightbox-panel>
-                    <div class="relative flex min-h-[200px] items-center justify-center bg-slate-50" data-lightbox-stage>
+                <div class="relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl bg-white shadow-2xl" data-lightbox-panel style="width: min(100%, 24rem)">
+                    <div class="relative flex min-h-[200px] items-center justify-center bg-slate-50 px-10 py-2 sm:px-12 sm:py-3" data-lightbox-stage>
                         <img
                             src=""
                             alt=""
@@ -285,7 +285,7 @@
 
                         <button
                             type="button"
-                            class="absolute right-2 top-2 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                            class="absolute right-1 top-1 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-sm backdrop-blur transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:right-2 sm:top-2"
                             data-lightbox-close
                             aria-label="{{ __('site.gallery.close') }}"
                         >
@@ -296,7 +296,7 @@
 
                         <button
                             type="button"
-                            class="absolute left-2 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-md transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:left-3"
+                            class="absolute left-1 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-md transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:left-2"
                             data-lightbox-prev
                             aria-label="{{ __('site.gallery.prev') }}"
                         >
@@ -307,7 +307,7 @@
 
                         <button
                             type="button"
-                            class="absolute right-2 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-md transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:right-3"
+                            class="absolute right-1 top-1/2 z-20 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-md transition hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 sm:right-2"
                             data-lightbox-next
                             aria-label="{{ __('site.gallery.next') }}"
                         >
@@ -573,6 +573,7 @@
             const thumbsNextButton = lightbox.querySelector('[data-lightbox-thumbs-next]');
             const closeButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-close]'));
             const stage = lightbox.querySelector('[data-lightbox-stage]');
+            const panel = lightbox.querySelector('[data-lightbox-panel]');
             const backdrop = lightbox.querySelector('[data-lightbox-backdrop]');
             const prevButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-prev]'));
             const nextButtons = Array.from(lightbox.querySelectorAll('[data-lightbox-next]'));
@@ -631,6 +632,33 @@
                 syncPlayButton(false);
             };
 
+            // Sesuaikan lebar kartu dengan ukuran foto yang sedang ditampilkan.
+            const fitPanelToImage = () => {
+                if (!panel || !image.naturalWidth || !image.naturalHeight) {
+                    return;
+                }
+
+                const isSmallScreen = window.innerWidth < 640;
+                const backdropPadding = isSmallScreen ? 24 : 48;
+                const availableWidth = Math.max(160, window.innerWidth - backdropPadding);
+                const maxImageHeight = window.innerHeight * (isSmallScreen ? 0.58 : 0.64);
+                const stageStyles = stage ? window.getComputedStyle(stage) : null;
+                const horizontalPadding = stageStyles
+                    ? parseFloat(stageStyles.paddingLeft) + parseFloat(stageStyles.paddingRight)
+                    : 0;
+                const maxImageWidth = Math.max(120, availableWidth - horizontalPadding);
+
+                const scale = Math.min(
+                    1,
+                    maxImageHeight / image.naturalHeight,
+                    maxImageWidth / image.naturalWidth
+                );
+                const imageWidth = Math.round(image.naturalWidth * scale);
+                const panelWidth = Math.min(availableWidth, imageWidth + horizontalPadding + 2);
+
+                panel.style.width = `${panelWidth}px`;
+            };
+
             const show = (index) => {
                 currentIndex = (index + triggers.length) % triggers.length;
 
@@ -642,6 +670,10 @@
                 image.alt = (trigger.dataset.galleryAlt || '').trim();
                 caption.textContent = title || `Foto ${currentIndex + 1}`;
                 counter.textContent = `${currentIndex + 1}/${triggers.length}`;
+
+                if (image.complete && image.naturalWidth && image.naturalHeight) {
+                    fitPanelToImage();
+                }
 
                 thumbs.forEach((thumb, thumbIndex) => {
                     const active = thumbIndex === currentIndex;
@@ -676,6 +708,10 @@
                 lightbox.classList.add('hidden');
                 document.body.style.overflow = '';
                 image.removeAttribute('src');
+
+                if (panel) {
+                    panel.style.width = 'min(100%, 24rem)';
+                }
 
                 if (lastFocused && typeof lastFocused.focus === 'function') {
                     lastFocused.focus({ preventScroll: true });
@@ -733,6 +769,14 @@
                 } else if (event.key === 'ArrowRight') {
                     event.preventDefault();
                     show(currentIndex + 1);
+                }
+            });
+
+            image.addEventListener('load', fitPanelToImage);
+
+            window.addEventListener('resize', () => {
+                if (isOpen()) {
+                    fitPanelToImage();
                 }
             });
 
