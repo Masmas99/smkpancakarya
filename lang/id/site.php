@@ -125,6 +125,37 @@ return [
         'scroll_next' => 'Geser daftar foto ke kanan',
     ],
 
+    'extracurricular' => [
+        'heading' => 'Ekstra Kurikuler',
+        'intro' => 'Wadah pengembangan minat, bakat, dan karakter siswa di luar kegiatan pembelajaran melalui berbagai pilihan ekstrakurikuler.',
+        'items' => [
+            [
+                'name' => 'Team Futsal Sekolah',
+                'description' => 'Melatih teknik, strategi, dan kerja sama tim melalui latihan rutin serta kompetisi antarsekolah.',
+            ],
+            [
+                'name' => 'Devackta Morgama Jurnalistik',
+                'description' => 'Mengasah kemampuan menulis, meliput, dan mengelola informasi sekolah secara kreatif dan bertanggung jawab.',
+            ],
+            [
+                'name' => 'Rohis SMK Pancakarya',
+                'description' => 'Membina akhlak dan keimanan melalui kajian keislaman, kegiatan ibadah, dan kepedulian sosial.',
+            ],
+            [
+                'name' => 'Paskibra SMK Pancakarya',
+                'description' => 'Melatih kedisiplinan, baris-berbaris, dan jiwa nasionalisme untuk tugas pengibaran bendera.',
+            ],
+            [
+                'name' => 'Apresiasi Seni SMK Pancakarya',
+                'description' => 'Mengembangkan bakat seni siswa melalui musik, tari, dan pentas kreativitas.',
+            ],
+            [
+                'name' => 'Ikatan Pecinta Alam SMK Pancakarya Tangerang',
+                'description' => 'Menumbuhkan kepedulian terhadap lingkungan melalui kegiatan alam dan konservasi.',
+            ],
+        ],
+    ],
+
     'menu' => [
         'open' => 'Buka menu navigasi',
         'close' => 'Tutup menu navigasi',

@@ -117,6 +117,27 @@ class LandingPageTest extends TestCase
             ->assertSee('syncHeaderWithScroll', false);
     }
 
+    public function test_landing_page_shows_extracurricular_section_below_gallery(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Ekstra Kurikuler')
+            ->assertSee('Team Futsal Sekolah')
+            ->assertSee('Devackta Morgama Jurnalistik')
+            ->assertSee('Rohis SMK Pancakarya')
+            ->assertSee('Paskibra SMK Pancakarya')
+            ->assertSee('Apresiasi Seni SMK Pancakarya')
+            ->assertSee('Ikatan Pecinta Alam SMK Pancakarya Tangerang');
+
+        $home = file_get_contents(resource_path('views/pages/landing/index.blade.php'));
+        $galleryPosition = strpos($home, '<section id="galeri"');
+        $extracurricularPosition = strpos($home, '<section id="ekstrakurikuler"');
+
+        $this->assertNotFalse($galleryPosition);
+        $this->assertNotFalse($extracurricularPosition);
+        $this->assertGreaterThan($galleryPosition, $extracurricularPosition);
+    }
+
     public function test_navigation_links_point_to_menu_pages(): void
     {
         $response = $this->get('/');

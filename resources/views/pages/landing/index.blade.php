@@ -260,6 +260,58 @@
             </div>
         </section>
 
+        <section id="ekstrakurikuler" class="border-t border-slate-200 bg-white py-16 sm:py-20" aria-labelledby="extracurricular-title">
+            @php
+                $extracurricularIcons = [
+                    // Bola futsal
+                    '<circle cx="12" cy="12" r="9" /><path d="m12 7.6 3.2 2.3-1.2 3.8h-4L8.8 9.9 12 7.6Z" /><path d="M12 3v4.6M4.3 9.6l4.5.3M6.3 19.1l3.3-4.4M17.7 19.1l-3.3-4.4M19.7 9.6l-4.5.3" />',
+                    // Jurnalistik
+                    '<path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6h4.75" />',
+                    // Rohis
+                    '<path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />',
+                    // Paskibra
+                    '<path d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />',
+                    // Apresiasi seni
+                    '<path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />',
+                    // Pecinta alam
+                    '<path d="m3 19 6-9 4 6 2-3 6 6H3Z" /><circle cx="17" cy="6" r="2" />',
+                ];
+            @endphp
+
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-3xl text-center">
+                    <h2 id="extracurricular-title" class="text-3xl font-bold uppercase tracking-tight text-blue-950 sm:text-4xl lg:text-5xl">
+                        {{ __('site.extracurricular.heading') }}
+                    </h2>
+
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+                        {{ __('site.extracurricular.intro') }}
+                    </p>
+                </div>
+
+                <ul class="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+                    @foreach (__('site.extracurricular.items') as $index => $item)
+                        <li class="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 transition duration-200 hover:border-blue-200 hover:bg-white hover:shadow-lg hover:shadow-slate-900/5 sm:p-6">
+                            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-950 text-white transition-colors duration-200 group-hover:bg-blue-800 sm:h-14 sm:w-14" aria-hidden="true">
+                                <svg class="h-6 w-6 sm:h-7 sm:w-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" focusable="false">
+                                    {!! $extracurricularIcons[$index] ?? '' !!}
+                                </svg>
+                            </span>
+
+                            <div class="min-w-0">
+                                <h3 class="text-balance text-base font-bold leading-snug text-slate-900 sm:text-lg">
+                                    {{ $item['name'] }}
+                                </h3>
+                                <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
+                                    {{ $item['description'] }}
+                                </p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </section>
+
         <div
             id="gallery-lightbox"
             class="fixed inset-0 z-[100] hidden bg-slate-950/60 backdrop-blur-sm"
