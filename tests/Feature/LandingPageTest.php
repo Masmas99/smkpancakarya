@@ -131,6 +131,7 @@ class LandingPageTest extends TestCase
             ->assertSee('Ikatan Pecinta Alam SMK Pancakarya Tangerang');
 
         foreach ([
+            'images/ekskul/futsal.png',
             'images/ekskul/dm-jurnalistik.jpeg',
             'images/ekskul/rohis.jpg',
             'images/ekskul/paskibra.jpg',

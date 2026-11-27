@@ -263,7 +263,7 @@
         <section id="ekstrakurikuler" class="border-t border-slate-200 bg-white py-16 sm:py-20" aria-labelledby="extracurricular-title">
             @php
                 $extracurricularLogos = [
-                    null, // Team Futsal belum memiliki logo di situs lama
+                    'images/ekskul/futsal.png',
                     'images/ekskul/dm-jurnalistik.jpeg',
                     'images/ekskul/rohis.jpg',
                     'images/ekskul/paskibra.jpg',
@@ -287,21 +287,13 @@
                     @foreach (__('site.extracurricular.items') as $index => $item)
                         <li class="group flex flex-col items-center rounded-2xl border border-slate-200 bg-slate-50 p-5 text-center transition duration-200 hover:border-blue-200 hover:bg-white hover:shadow-lg hover:shadow-slate-900/5 sm:p-6">
                             <span class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white p-2 shadow-sm ring-1 ring-slate-200 transition duration-200 group-hover:ring-blue-200 sm:h-24 sm:w-24">
-                                @if (! empty($extracurricularLogos[$index]))
-                                    <img
-                                        src="{{ asset($extracurricularLogos[$index]) }}"
-                                        alt="Logo {{ $item['name'] }}"
-                                        class="h-full w-full object-contain"
-                                        loading="lazy"
-                                        decoding="async"
-                                    >
-                                @else
-                                    <svg class="h-12 w-12 text-blue-900 sm:h-14 sm:w-14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-                                        <circle cx="12" cy="12" r="9" />
-                                        <path d="m12 7.6 3.2 2.3-1.2 3.8h-4L8.8 9.9 12 7.6Z" />
-                                        <path d="M12 3v4.6M4.3 9.6l4.5.3M6.3 19.1l3.3-4.4M17.7 19.1l-3.3-4.4M19.7 9.6l-4.5.3" />
-                                    </svg>
-                                @endif
+                                <img
+                                    src="{{ asset($extracurricularLogos[$index]) }}"
+                                    alt="Logo {{ $item['name'] }}"
+                                    class="h-full w-full object-contain"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
                             </span>
 
                             <h3 class="mt-4 text-balance text-base font-bold leading-snug text-slate-900 sm:text-lg">
